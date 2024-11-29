@@ -1,0 +1,68 @@
+---
+const { url, title, date } = Astro.props;
+---
+
+<li>
+  <a href={url}
+    ><div class="title-date-wrapper">
+      <span class="title">{title}</span><span class="date">{date}</span>
+    </div></a
+  >
+</li>
+
+<style>
+  li {
+    list-style: none;
+  }
+
+  a {
+    display: block;
+    text-decoration: none;
+    padding-right: 1.25rem;
+    margin-right: 0.25rem;
+    transition: opacity 0.15s ease-in;
+
+    &:hover {
+      opacity: 1 !important;
+      .title,
+      .date {
+        &::before {
+          z-index: -1;
+          display: block;
+          content: "";
+          background-color: var(--contrast-bg-color);
+          position: absolute;
+          top: -0.2rem;
+          left: -0.4rem;
+          right: -0.4rem;
+          bottom: -0.2rem;
+          border-radius: 0.4rem;
+        }
+      }
+    }
+
+    .title,
+    .date {
+      position: relative;
+      line-height: 24px;
+      &::before {
+        display: block;
+        content: "";
+        background-color: transparent;
+        transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+  }
+
+  .title-date-wrapper {
+    margin-left: 15%;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex: 1 1 0;
+
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+</style>

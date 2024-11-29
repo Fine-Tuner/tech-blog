@@ -1,0 +1,141 @@
+---
+import type { PostData } from "../../types/post";
+import BlogPostLink from "./BlogPostLink.astro";
+
+const { allPosts } = Astro.props;
+
+const binarySearchInsert = (arr: PostData[], post: PostData) => {
+  let left = 0;
+  let right = arr.length;
+
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2);
+    if (
+      new Date(arr[mid].frontmatter.pubDate) >
+      new Date(post.frontmatter.pubDate)
+    ) {
+      right = mid;
+    } else {
+      left = mid + 1;
+    }
+  }
+
+  return [...arr.slice(0, left), post, ...arr.slice(left)];
+};
+
+const postByYear = allPosts.reduce(
+  (acc: Record<string, PostData[]>, post: PostData) => {
+    const currentYear = new Date(post.frontmatter.pubDate)
+      .getFullYear()
+      .toString();
+
+    if (!acc[currentYear]) {
+      acc[currentYear] = [];
+    }
+
+    acc[currentYear] = binarySearchInsert(acc[currentYear], post);
+
+    return acc;
+  },
+  {},
+);
+
+const sortedYears: string[] = Object.keys(postByYear).sort(
+  (a, b) => Number(b) - Number(a),
+);
+---
+
+<section>
+  {
+    sortedYears.map((year) => (
+      <div class="year-wrapper">
+        <span class="year">{year}</span>
+        <ul>
+          {postByYear[year].reverse().map((post: PostData) => {
+            const month = String(
+              new Date(post.frontmatter.pubDate).getMonth() + 1,
+            ).padStart(2, "0");
+            const date = String(
+              new Date(post.frontmatter.pubDate).getDate(),
+            ).padStart(2, "0");
+
+            return (
+              <BlogPostLink
+                url={post.url}
+                title={post.frontmatter.title}
+                date={`${month}.${date}`}
+              >
+                {post.frontmatter.title}
+              </BlogPostLink>
+            );
+          })}
+        </ul>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  section {
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.35s;
+
+    margin-top: 36px;
+
+    &:hover {
+      a {
+        opacity: 0.4;
+      }
+    }
+  }
+
+  .year-wrapper {
+    position: relative;
+    border-top: 1px solid var(--gray-700);
+
+    padding: 20px 0;
+
+    &:hover {
+      .year {
+        color: var(--contrast-color);
+        &::before {
+          z-index: -1;
+          display: block;
+          content: "";
+          background-color: var(--contrast-bg-color);
+          position: absolute;
+          top: -0.4rem;
+          left: -0.4rem;
+          right: -0.4rem;
+          bottom: -0.4rem;
+          border-radius: 0.4rem;
+        }
+      }
+    }
+  }
+
+  .year-wrapper:last-child {
+    border-bottom: 1px solid var(--gray-700);
+  }
+
+  .year {
+    position: absolute;
+    top: 34px;
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0;
+    color: var(--text-color);
+    &::before {
+      display: block;
+      content: "";
+      background-color: transparent;
+      transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-flow: column;
+  }
+</style>

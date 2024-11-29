@@ -1,0 +1,33 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import MainLayout from "./MainLayout.astro";
+import PostLayout from "./PostLayout.astro";
+import "./markdownPostLayout.module.css";
+import NavHeader from "../components/posts/NavHeader.astro";
+import Blur from "../components/Blur.astro";
+import { Scrollbars } from "react-custom-scrollbars-2";
+
+interface Props {
+  frontmatter: {
+    title: string;
+    pubDate: string;
+    author: string;
+    tags: string[];
+  };
+}
+
+const { frontmatter } = Astro.props as Props;
+
+const year = frontmatter.pubDate.toString().slice(0, 4);
+const month = frontmatter.pubDate.toString().slice(5, 7);
+const day = frontmatter.pubDate.toString().slice(8, 10);
+---
+
+<BaseLayout pageTitle={frontmatter.title}>
+  <NavHeader />
+  <MainLayout title={frontmatter.title} description={`${year}.${month}.${day}`}>
+    <PostLayout>
+      <slot />
+    </PostLayout>
+  </MainLayout>
+</BaseLayout>

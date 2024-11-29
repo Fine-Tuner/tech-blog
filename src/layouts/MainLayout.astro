@@ -1,0 +1,43 @@
+---
+import ThemeIconButton from "../components/ThemeIconButton";
+
+const { title, description } = Astro.props;
+---
+
+<main>
+  <div class="title-area">
+    <div>
+      <h1>{title}</h1>
+      {description && <p>{description}</p>}
+    </div>
+
+    <ThemeIconButton client:only="react" />
+    <!-- <MoonSVG /> -->
+  </div>
+  <slot />
+</main>
+
+<style>
+  h1 {
+    color: var(--heading-color);
+    margin: 0;
+  }
+
+  p {
+    margin-top: 8px;
+  }
+
+  .button-wrapper {
+    color: red;
+  }
+  .moon-icon {
+    fill: red;
+  }
+
+  .title-area {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>

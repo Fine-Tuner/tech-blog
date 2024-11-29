@@ -1,0 +1,262 @@
+:root {
+  --gray-50: #efefef;
+  --gray-100: #cdcdcd;
+  --gray-200: #b5b5b5;
+  --gray-300: #939393;
+  --gray-400: #7e7e7e;
+  --gray-500: #5e5e5e;
+  --gray-600: #474747;
+  --gray-700: #313131;
+  --gray-800: #262626;
+  --gray-900: #1b1b1b;
+
+  /* white mode */
+  --contrast-color: black;
+  --contrast-bg-color: hsla(0, 0%, 0%, .045);
+
+  --heading-color: black;
+  --text-color: black;
+  --code-color: var(--gray-200);
+  --bg-color: white;
+  --b-color: black;
+  --external-link-color: black;
+  --external-link-icon-color: rgb(62, 47, 47);
+  --hover-color: black;
+  --hover-background-color: var(--gray-100);
+
+  --border: #292929;
+  --content-width: 640px;
+}
+
+.dark {
+  --contrast-color: white;
+  --contrast-bg-color: var(--gray-700);
+
+  --heading-color: var(--gray-50);
+  --text-color: var(--gray-200);
+  --code-color: var(--gray-200);
+  --bg-color: #141414;
+  --b-color: var(--gray-50);
+  --external-link-color: var(--gray-50);
+  --external-link-icon-color: #ebebeb;
+  --hover-color: var(--gray-50);
+  --hover-background-color: var(--gray-800);
+}
+
+body {
+  width: 100%;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+
+  font-family: "AritaBuri", "AritaDotum", Arial, Helvetica, sans-serif;
+}
+
+main {
+  width: var(--content-width);
+  max-width: 90%;
+  margin: 156px auto 0;
+}
+
+h1 {
+  font-size: 1.25rem;
+
+  color: var(--heading-color);
+}
+
+h2 {
+  font-size: 1.25rem;
+
+  color: var(--heading-color);
+}
+
+p {
+  line-height: 1.75rem;
+}
+
+b,
+strong {
+  color: var(--b-color);
+}
+
+a {
+  color: var(--external-link-color);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--hover-color);
+  }
+}
+
+ul {
+  margin: 0;
+}
+
+.link {
+  color: var(--external-link-color);
+
+  text-decoration-color: var(--border);
+  text-underline-offset: 0.25rem;
+  text-decoration-thickness: 1px;
+
+  position: relative;
+
+  &:hover {
+    text-decoration: none;
+
+    color: var(--hover-color);
+
+    &::before {
+      position: absolute;
+      top: -0.125rem;
+      bottom: -0.125rem;
+      left: -0.125rem;
+      right: -0.125rem;
+      display: block;
+      content: "";
+      border-radius: 0.25rem;
+      background: #ffffff45;
+      opacity: 0.5;
+
+      animation-name: fadein;
+      animation-duration: 0.15s;
+    }
+  }
+}
+
+.internal-link {
+  position: relative;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.25rem;
+
+  &:hover {
+    background: var(--hover-background-color);
+    color: inherit;
+
+    transition: all 0.25s ease-in;
+  }
+}
+
+/* 외부 사이트로 이동합니다 */
+.external-link {
+  padding: 0.25rem 0 0.25rem 0.25rem;
+  border-radius: 0.25rem;
+
+  position: relative;
+
+  &:hover {
+    background: var(--gray-700);
+    transition: all 0.25s ease-in;
+  }
+
+  &::after {
+    position: relative;
+    display: inline-block;
+    right: 0;
+    bottom: 0;
+    content: "";
+    background-image: url("/src/assets/external_link.svg");
+    background-size: 80%;
+    background-position: left top;
+    background-repeat: no-repeat;
+
+    vertical-align: text-bottom;
+
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes enter {
+    0% {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  [data-animate] > * {
+    --lv: 0;
+    --lv-wait: 0;
+    --delay: 50ms;
+    --start: 0ms;
+    animation: enter 0.5s both;
+    animation-delay: calc(
+      var(--lv) * var(--delay) + var(--lv-wait) * var(--delay) + var(--start)
+    );
+  }
+
+  [data-animate-speed="slow"] > * {
+    --delay: 0.1s;
+  }
+
+  [data-animate-speed="fast"] > * {
+    --delay: 25ms;
+  }
+}
+
+[data-animate] > *:nth-child(1) {
+  --lv: 1;
+}
+
+[data-animate] > *:nth-child(2) {
+  --lv: 2;
+}
+
+[data-animate] > *:nth-child(3) {
+  --lv: 3;
+}
+
+[data-animate] > *:nth-child(4) {
+  --lv: 4;
+}
+
+[data-animate] > *:nth-child(5) {
+  --lv: 5;
+}
+
+[data-animate] > *:nth-child(6) {
+  --lv: 6;
+}
+
+[data-animate] > *:nth-child(7) {
+  --lv: 7;
+}
+
+[data-animate] > *:nth-child(8) {
+  --lv: 8;
+}
+
+[data-animate] > *:nth-child(9) {
+  --lv: 9;
+}
+
+[data-animate] > *:nth-child(10) {
+  --lv: 10;
+}
+
+[data-animate] > *:nth-child(11) {
+  --lv: 11;
+}

@@ -1,0 +1,47 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import "../style/globalStyle.css";
+import Blur from "../components/Blur.astro";
+import ScrollContainer from "../components/ScrollContainer";
+
+const { pageTitle } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko-kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    />
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/gh/webfontworld/amore/AritaBuri-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <title>{pageTitle}</title>
+    <style></style>
+    <ViewTransitions />
+    <script is:inline>
+      const theme = localStorage.getItem("theme");
+
+      if (
+        theme === "dark" ||
+        (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+  </head>
+  <body>
+    <ScrollContainer client:only="react">
+      <Blur />
+      <slot />
+    </ScrollContainer>
+  </body>
+</html>
