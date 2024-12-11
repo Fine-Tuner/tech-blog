@@ -43,3 +43,42 @@ export const useLoadKakaoScript = (callbackFn?: () => void) => {
 
 ```
 
+## 2차 시도
+
+그렇다면, 비슷하지만 다른 방법을 생각했다. window객체에 들어있는지 검사를 하지 않고 HTML 자체에 해당 script가 들어있는지 검사하면 어떨까? 라는 생각이었다.
+
+이 생각을 착안하게 된 이유는 window.kakao에 데이터가 들어있는 시점보다 더 빠를 것이라고 판단했기 때문이다.
+실제로 아래 코드를 봤을 때 HTML에 script태그가 추가되는 시점은 document.head.appendChild(script)부분이다.
+
+1차 시도 때는 script.onload에 의해 로드 및 파싱이 다 되어서야 window.kakao가 완성되었기 때문에 좀 더 빠르게 조건문에서 걸를 수 있는 방법을 생각했다.
+
+결론은 원하는데로 동일한 컴포넌트가 여러개여도 1번만 추가되었다!
+
+```tsx
+import { useEffect } from 'react';
+
+export const useLoadKakaoScript = (callbackFn?: () => void) => {
+    const existingScript = document.querySelector('script[src*="dapi.kakao.com/v2/maps/sdk.js"]');
+  useEffect(() => {
+    if (window.kakao || existingScript) {
+      callbackFn && callbackFn();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_APP_KEY}&autoload=false&libraries=services,clusterer,drawing`;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      window.kakao.maps.load(() => {
+        callbackFn && callbackFn();
+      });
+    };
+  }, []);
+};
+
+```
+
+## 결론
+
+동적으로 써드파티를 넣으려고 하는 경우가 아니라면, Next.js에서 제공하는 Script태그를 사용하는 것이 가장 베스트다. 하지만 나는 사용하지 않을 상황이라면 불필요한 태그를 추가하고 싶지 않았기 때문에 위와 같은 과정을 거쳤다. 위 코드가 완벽하다고는 생각하지 않는다. 더 좋은 코드가 있다고 믿는다. 왜냐하면 위 코드는 완벽한 동작을 보장하지는 않는다고 생각하기 떄문이다. 더 좋은 생각이 떠오른다면 해당 포스트는 업데이트 할 예정이다.
