@@ -6,8 +6,8 @@ description: 'SwiftUI를 학습해보자.'
 tags: ["SwiftUI"]
 ```
 
-> 공부에 앞서 : 왜 갑자기 Swift를 공부하는걸까?
-프론트엔드 개발자로서, 프론트엔드 한 분야에서 잘하는 것도 중요하지만 만들고 싶은 제품을 만들 수 있는 개발자가 진정한 개발자라고 느끼기 때문이다. 약 3년 넘게 Js, React, Next만 보다가 지인의 연락을 받고 함께 Swift기초부터 공부해서 생각한 제품을 만들어보기로 했다.
+> Swift를 공부하는 이유  
+한 분야에서 잘하는 것도 중요하지만 분야에 제한없이 만들고 싶은 것을 만들 수 있어야 된다고 생각하던 중 지인의 연락을 받고 함께 Swift기초부터 공부해서 생각한 제품을 만들어보기로 했다.
 
 
 > [참고한 강의](https://www.youtube.com/watch?v=N-ntKJdVNBs&list=PLwvDm4VfkdphqETTBf-DdjCoAvhai1QpO&index=2)
@@ -51,3 +51,58 @@ Minimum Deployments의 경우 사용자가 사용할 수 있는 최소 버전을
 또한 이 텍스트에 대한 세부 설정을 하려면 우측 패널에서 제일 우측에 있는 설정 아이콘을 클릭하면 폰트를 변경하는 등의 세부 작업을 할 수 있다.
 
 ![](../images/2024-12-30-23-12-20.png)
+
+코드로 작성할 경우 1번 방법처럼 폰트를 적용할 수도 있고, 2번 방법처럼 폰트를 적용할 수도 있다.
+
+> 2번 방법의 size 부분을 보면 정적인 사이즈를 주고 있는 것을 볼 수 있는데, 이렇게 주게 되면 font(.title) 이런 식으로 줬을 때처럼 동적으로 사이즈를 대응할 수 없다. (아이폰, 아이패드 등등..)
+
+```swift
+import SwiftUI
+
+struct textTest: View {
+    var body: some View {
+        Text("Hello, World!")
+        // 1번 방법
+//            .font(.body)
+//            .fontWeight(.bold)
+//            .foregroundColor(Color.red)
+//            .underline(color: Color.red)
+//            .strikethrough(color: Color.green)
+        
+        // 2번 방법
+            .font(.system(size: 24, weight: .semibold, design: .serif))
+    }
+}
+```
+
+여러 줄을 입력하는 경우
+```swift
+import SwiftUI
+
+struct textTest: View {
+    var body: some View {
+        Text("Hello my name is ParkTaejoon! This is Swiftful Thinking Bootcamp. I am really enjoying this course and learning alot")
+            .multilineTextAlignment(.center)
+    }
+}
+```
+
+텍스트가 들어갈 Frame크기를 지정하고, 각 문자의 첫번째가 대문자가 될 수 있게 하고 텍스트의 색상을 바꾸고, 자간(kerning) 및 Frame에 모든 글자가 딱맞게 들어갈 수 있도록 조정할 수도 있다.
+
+> multiline 좌우정렬은 우측인데, Frame의 정렬을 좌측으로 설정하게 되면 만약 한 줄로 텍스트가 나올 경우에는 좌측에 정렬하게 해주고 여러 줄일 경우 우측에 정렬되게 해준다.
+```swift
+import SwiftUI
+
+struct textTest: View {
+    var body: some View {
+        Text("Hello world".capitalized)
+            .font(.system(size: 24, weight: .semibold, design: .serif))
+            .baselineOffset(30.0) // 줄 높이
+            .multilineTextAlignment(.trailing) // 좌우 정렬
+            .foregroundStyle(Color.red) // 텍스트 색상
+            .kerning(5) // 자간
+            .frame(width: 200, height: 200, alignment: .leading) // 프레임 크기 및 정렬 설정
+            .minimumScaleFactor(0.1) // 0.1로 하면 Frame에 딱맞게 들어간다.
+    }
+}
+```
