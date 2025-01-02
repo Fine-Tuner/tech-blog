@@ -7,7 +7,12 @@ article {
   font-size: 16px;
   line-height: 1.5;
 
+  padding-top: 20px;
   padding-bottom: 100px;
+
+  & > h2:first-of-type {
+    margin-top: 40px;
+  }
 }
 
 pre {
