@@ -10,54 +10,55 @@ import MainLayout from "../layouts/MainLayout.astro";
   <MainLayout title="박태준" description="">
     <div data-animate data-animate-speed="slow">
       <div class="introduce-area">
-        <div>
-          <p>
-            <b>새로운 기술</b>을 배우는 것도 좋아하지만, 고객의 <b>사용자 경험</b>을 우선시 합니다. <br />
-            유용한 것을 발견하면 <b>공유하는 것</b>을 좋아하고, 비효율적인 테스크를 <b>효율적으로 만드는 것</b>에 관심이
-            많습니다.
-          </p>
-          <p>
-            현재 <a class="external-link" href="https://midasit.notion.site/MIDAS-IN-a9fffb2e45fb4519bfb7ae69e032f1f9"
-              >마이다스인</a
-            >에서 인사담당자 및 200만 구직자가 사용하는 레거시 프로젝트들을 리뉴얼하는 작업을 하고 있습니다.
-          </p>
-        </div>
-        <ul class="icon-list">
-          <li>
-            <a class="icon-link" href="mailto:joker77z@naver.com" aria-label="email"><Email /></a>
-          </li>
-          <li>
-            <a class="icon-link" href="https://www.github.com/joker77z" aria-label="github"><Github /></a>
-          </li>
-          <li>
-            <a
-              class="icon-link"
-              href="https://www.linkedin.com/in/%ED%83%9C%EC%A4%80-%EB%B0%95-642557230/"
-              aria-label="linkedin"><Linkedin /></a
-            >
-          </li>
-        </ul>
+        <p>
+          사람들에게 도움이 되는 것을 만드는 일을 좋아합니다. 그래서 <b>반도체 장비 설계 엔지니어</b>로 커리어를
+          시작했고, 현재는 <b>프론트엔드 엔지니어</b>로 일하며 보람을 느끼고 있습니다.
+        </p>
+        <p>
+          <b>새로운 기술</b>을 배우는 것도 좋아하지만, 언제나 고객의 <b>사용자 경험</b>을 우선합니다. <br />
+          <b>공유와 협업</b>을 즐기며, 비효율적인 프로세스를 <b>효율적으로 개선할 때</b> 큰 기쁨을 느낍니다.
+        </p>
+        <p>
+          현재 <a class="external-link" href="https://midasit.notion.site/MIDAS-IN-a9fffb2e45fb4519bfb7ae69e032f1f9"
+            >마이다스</a
+          >에서 인사담당자 및 250만 이상 구직자가 사용하는 레거시 프로젝트들을 리뉴얼하는 작업을 하고 있습니다.
+        </p>
       </div>
-
-      <table class="page-area">
-        <tr>
-          <th><a class="menu-link internal-link" href="/note">수첩</a></th>
-          <td><span class="menu-description">순간적인 생각을 기록하는 작은 수첩</span></td>
-        </tr>
-        <tr>
-          <th><a class="menu-link internal-link" href="/library">서재</a></th>
-          <td><span class="menu-description">깊이 있는 고민과 통찰의 공간</span></td>
-        </tr>
-        <tr>
-          <th><a class="menu-link internal-link" href="/learn">학교</a></th>
-          <td><span class="menu-description">배움의 공간</span></td>
-        </tr>
-        <tr>
-          <th><a class="menu-link internal-link" href="/tool">도구</a></th>
-          <td><span class="menu-description">생산성을 높여주는 도구</span></td>
-        </tr>
-      </table>
+      <ul class="icon-list">
+        <li>
+          <a class="icon-link" href="mailto:joker77z@naver.com" aria-label="email"><Email /></a>
+        </li>
+        <li>
+          <a class="icon-link" href="https://www.github.com/fine-tuner" aria-label="github"><Github /></a>
+        </li>
+        <li>
+          <a
+            class="icon-link"
+            href="https://www.linkedin.com/in/%ED%83%9C%EC%A4%80-%EB%B0%95-642557230/"
+            aria-label="linkedin"><Linkedin /></a
+          >
+        </li>
+      </ul>
     </div>
+
+    <table class="page-area">
+      <tr>
+        <th><a class="menu-link internal-link" href="/note">수첩</a></th>
+        <td><span class="menu-description">순간적인 생각을 기록하는 작은 수첩</span></td>
+      </tr>
+      <tr>
+        <th><a class="menu-link internal-link" href="/library">서재</a></th>
+        <td><span class="menu-description">깊이 있는 고민과 통찰의 공간</span></td>
+      </tr>
+      <tr>
+        <th><a class="menu-link internal-link" href="/learn">학교</a></th>
+        <td><span class="menu-description">배움의 공간</span></td>
+      </tr>
+      <tr>
+        <th><a class="menu-link internal-link" href="/tool">도구</a></th>
+        <td><span class="menu-description">생산성을 높여주는 도구</span></td>
+      </tr>
+    </table>
   </MainLayout>
 </BaseLayout>
 
@@ -65,7 +66,6 @@ import MainLayout from "../layouts/MainLayout.astro";
   .introduce-area {
     display: flex;
     flex-flow: column;
-    gap: 20px;
     margin-top: 24px;
   }
   .page-area {
