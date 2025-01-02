@@ -1,34 +1,26 @@
-
-
-```
+---
 layout: ../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-11-09
-title: '[Next.js][App Router] Route Segment Option'
-description: 'Route Segment Option'
+title: "[Next.js][App Router] Route Segment Option"
+description: "Route Segment Option"
 tags: ["Next.js"]
-```
-
-
+---
 
 ## Route Segmenet Option
 
-저번 포스팅에서 Full Route를 적용하기 위해 캐싱되지 않는 API들은 캐싱처리 해주거나 Params를 받아오는 페이지는 미리 사용하는 params들을 정의해줌으로서 static한 페이지를 만들어줄 수 있었다. 하지만, 이 과정이 번거롭게 느껴질 수 있다. 페이지별로도 Static  또는 Dynamic한 페이지를 적용해줄 수 있다.
+저번 포스팅에서 Full Route를 적용하기 위해 캐싱되지 않는 API들은 캐싱처리 해주거나 Params를 받아오는 페이지는 미리 사용하는 params들을 정의해줌으로서 static한 페이지를 만들어줄 수 있었다. 하지만, 이 과정이 번거롭게 느껴질 수 있다. 페이지별로도 Static 또는 Dynamic한 페이지를 적용해줄 수 있다.
 
 디테일하게 들어가면 Option 종류가 다양하다. revalidate를 페이지별로 설정해주거나 할 수 있는데 가장 많이 사용하는 dynamic에 대해 알아보자. dynamic을 통해 해당 페이지를 강제로 static 또는 dynamic페이지로 설정해줄 수 있다.
 
 ```tsx
 // app/(with-searchbar)/page.tsx
-export const dynamic
+export const dynamic;
 ```
-
-
 
 - 기본값은 "auto"
 - force-dynamic : 페이지를 강제로 Dynamic 페이지로 설정
 - force-static : 페이지를 강제로 Static 페이지로 설정
 - error : 페이지를 강제로 Static 페이지로 설정 (설정하면 안되는 이유가 있는 경우에 빌드 오류를 발생시킨다. 예를 들면 동적함수를 사용하는 경우!)
-
-
 
 ## 강제로 Dynamic, Static하게 바꾸게 되면 어떻게 될까?
 
@@ -53,8 +45,6 @@ export default async function Page({ searchParams }: Props) {
     cache: "force-cache",
   });
 ```
-
-
 
 ## 이런 강제로 전환하는 방법 권유될까?
 

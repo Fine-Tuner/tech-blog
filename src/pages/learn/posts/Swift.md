@@ -1,18 +1,16 @@
-```
+---
 layout: ../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-12-30
-title: 'SwiftUI'
-description: 'SwiftUI를 학습해보자.'
+title: "SwiftUI"
+description: "SwiftUI를 학습해보자."
 tags: ["SwiftUI"]
-```
+---
 
 > **Swift를 공부하는 이유**  
-한 분야에서 잘하는 것도 중요하지만 분야에 제한없이 만들고 싶은 것을 만들 수 있어야 된다고 생각하던 중 지인의 연락을 받고 함께 LLM을 활용하여 Obsidian + GoodNote의 장점을 섞은 서비스를 만들어보기로 했다.
+> 한 분야에서 잘하는 것도 중요하지만 분야에 제한없이 만들고 싶은 것을 만들 수 있어야 된다고 생각하던 중 지인의 연락을 받고 함께 LLM을 활용하여 Obsidian + GoodNote의 장점을 섞은 서비스를 만들어보기로 했다.
 
-> - [참고한 공식문서 튜토리얼](https://developer.apple.com/tutorials/swiftui-concepts/exploring-the-structure-of-a-swiftui-app)  
+> - [참고한 공식문서 튜토리얼](https://developer.apple.com/tutorials/swiftui-concepts/exploring-the-structure-of-a-swiftui-app)
 > - [참고한 강의](https://www.youtube.com/watch?v=N-ntKJdVNBs&list=PLwvDm4VfkdphqETTBf-DdjCoAvhai1QpO&index=2)
-
-
 
 ## SwiftUI vs UI Kit
 
@@ -29,6 +27,7 @@ UIKit는 AppStore가 등장한 2008년에 등장하여 기존 앱들은 UI Kit�
 - Organization Identifier: 조직 식별자다. 공부용이니까 com.myorganization 으로 만든다. 입력하면 Bundle Identifier이 Product Name과 합쳐서 만들어진다.
 
 ## 프로젝트 관리
+
 좌측 파일 탐색기에서 제일 상단의 폴더를 클릭하면 금방 세팅한 프로젝트 설정 외에도 다양한 설정 기능들이 나온다.
 
 ![](../images/2024-12-30-23-23-10.png)
@@ -43,12 +42,11 @@ Minimum Deployments의 경우 사용자가 사용할 수 있는 최소 버전을
 앱 아이콘을 지정할 수 있다. App Icons and Launch Screen > App Icon의 이름을 지정할 수 있다. 여기서 지정할 아이콘의 asset폴더는 좌측 파일 탐색기에서 Assets폴더에서 확인할 수 있다.
 ![](../images/2024-12-30-23-36-51.png)
 
-
 ## 컴포넌트
 
 ### Text
 
-우측 상단에 있는 + 버튼을 눌러서 원하는 요소를 검색할 수 있다.  
+우측 상단에 있는 + 버튼을 눌러서 원하는 요소를 검색할 수 있다.
 
 ![](../images/2024-12-30-23-09-01.png)
 
@@ -72,7 +70,7 @@ struct textTest: View {
 //            .foregroundColor(Color.red)
 //            .underline(color: Color.red)
 //            .strikethrough(color: Color.green)
-        
+
         // 2번 방법
             .font(.system(size: 24, weight: .semibold, design: .serif))
     }
@@ -80,6 +78,7 @@ struct textTest: View {
 ```
 
 여러 줄을 입력하는 경우
+
 ```swift
 import SwiftUI
 
@@ -94,6 +93,7 @@ struct textTest: View {
 텍스트가 들어갈 Frame크기를 지정하고, 각 문자의 첫번째가 대문자가 될 수 있게 하고 텍스트의 색상을 바꾸고, 자간(kerning) 및 Frame에 모든 글자가 딱맞게 들어갈 수 있도록 조정할 수도 있다.
 
 > multiline 좌우정렬은 우측인데, Frame의 정렬을 좌측으로 설정하게 되면 만약 한 줄로 텍스트가 나올 경우에는 좌측에 정렬하게 해주고 여러 줄일 경우 우측에 정렬되게 해준다.
+
 ```swift
 import SwiftUI
 
@@ -126,10 +126,13 @@ struct CircleTest: View {
 ```
 
 ![](../images/2025-01-02-14-52-31.png)
+
 > 추후 애니메이션을 Spinner를 만들 수 있다.
 
 ### Rectangle
+
 버튼 같은 요소처럼 배경으로 적절하다.
+
 > Circle 및 Rectangle 이런 Shape들은 fill, foregroundColor(배경), stroke, trim 다 사용할 수 있다.
 
 ```swift
@@ -143,7 +146,9 @@ struct CircleTest: View {
 ```
 
 ## Color
+
 ### 특정 Hex코드 사용핳기
+
 특정 Hex코드의 색상을 사용하고 싶을 수 있다.
 
 > Edit > Format > Show Color에서 색상 선택하거나 #colorLiteral()을 입력하면 색상을 선택할 수 있다.
@@ -157,7 +162,9 @@ RoundedRectangle(cornerRadius: 25)
 ![](../images/2025-01-02-15-13-53.png)
 
 ### 시스템 컬러 사용하기
+
 특히 배경색상을 지정할 때 흰색말고 시스템 배경색(옅은 회색)을 사용하고 싶을 때 유용하다. (화이트/다크모드 지원)
+
 ```swift
 RoundedRectangle(cornerRadius: 25)
     .fill(Color(UIColor.secondarySystemBackground))
@@ -165,17 +172,20 @@ RoundedRectangle(cornerRadius: 25)
 ```
 
 ### 직접만든 커스텀 컬러 사용하기
+
 LNB > Assets에서 컬러를 직접 하나 만들어둘 수 있다.
 
 ![](../images/2025-01-02-16-23-38.png)
 
 사용할 때는 다음과 같이 문자열을 넣어주면 된다.
+
 ```swift
 RoundedRectangle(cornerRadius: 25)
     .fill(Color("CustomColor"))
 ```
 
 ### Shadow 넣기
+
 (default)radius값만 넣을 수도 있고, 색상 및 XY좌표로 얼마나 이동시킬지도 결정할 수 있다.
 
 > Color에 opacity로 투명도 조절할수도있다.
@@ -191,6 +201,7 @@ RoundedRectangle(cornerRadius: 25)
 ### Gradient 넣기
 
 리니어
+
 ```swift
 RoundedRectangle(cornerRadius: 25.0)
     .fill(
@@ -204,6 +215,7 @@ RoundedRectangle(cornerRadius: 25.0)
 ```
 
 방사형
+
 ```swift
 RoundedRectangle(cornerRadius: 25.0)
     .fill(
