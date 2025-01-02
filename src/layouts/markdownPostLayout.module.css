@@ -10,7 +10,7 @@ article {
   padding-top: 20px;
   padding-bottom: 100px;
 
-  & > h2:first-of-type {
+  & > h2:first-child {
     margin-top: 40px;
   }
 }
