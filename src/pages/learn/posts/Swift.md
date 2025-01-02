@@ -46,6 +46,8 @@ Minimum Deployments의 경우 사용자가 사용할 수 있는 최소 버전을
 
 ## 컴포넌트
 
+### Text
+
 우측 상단에 있는 + 버튼을 눌러서 원하는 요소를 검색할 수 있다.  
 
 ![](../images/2024-12-30-23-09-01.png)
@@ -107,4 +109,110 @@ struct textTest: View {
             .minimumScaleFactor(0.1) // 0.1로 하면 Frame에 딱맞게 들어간다.
     }
 }
+```
+
+### Circle
+
+```swift
+struct CircleTest: View {
+    var body: some View {
+        // Ellipse, Capsule도 동일한 메서드를 이용할 수 있다.
+        Circle()
+            .trim(from: 0.2, to: 1.0)
+            .stroke(Color.purple, lineWidth: 10)
+            .frame(width: 100, height: 100)
+    }
+}
+```
+
+![](../images/2025-01-02-14-52-31.png)
+> 추후 애니메이션을 Spinner를 만들 수 있다.
+
+### Rectangle
+버튼 같은 요소처럼 배경으로 적절하다.
+> Circle 및 Rectangle 이런 Shape들은 fill, foregroundColor(배경), stroke, trim 다 사용할 수 있다.
+
+```swift
+struct CircleTest: View {
+    var body: some View {
+        // Rectangle().frame(width: 200, height: 100)
+        RoundedRectangle(cornerRadius: 10)
+            .frame(width: 100, height: 50)
+    }
+}
+```
+
+## Color
+### 특정 Hex코드 사용핳기
+특정 Hex코드의 색상을 사용하고 싶을 수 있다.
+
+> Edit > Format > Show Color에서 색상 선택하거나 #colorLiteral()을 입력하면 색상을 선택할 수 있다.
+
+```swift
+RoundedRectangle(cornerRadius: 25)
+    .fill(Color(#colorLiteral(red: 0, green: 1, blue: 0.6039558649, alpha: 1)))
+    .frame(width: 200, height: 100)
+```
+
+![](../images/2025-01-02-15-13-53.png)
+
+### 시스템 컬러 사용하기
+특히 배경색상을 지정할 때 흰색말고 시스템 배경색(옅은 회색)을 사용하고 싶을 때 유용하다. (화이트/다크모드 지원)
+```swift
+RoundedRectangle(cornerRadius: 25)
+    .fill(Color(UIColor.secondarySystemBackground))
+    .frame(width: 200, height: 100)
+```
+
+### 직접만든 커스텀 컬러 사용하기
+LNB > Assets에서 컬러를 직접 하나 만들어둘 수 있다.
+
+![](../images/2025-01-02-16-23-38.png)
+
+사용할 때는 다음과 같이 문자열을 넣어주면 된다.
+```swift
+RoundedRectangle(cornerRadius: 25)
+    .fill(Color("CustomColor"))
+```
+
+### Shadow 넣기
+(default)radius값만 넣을 수도 있고, 색상 및 XY좌표로 얼마나 이동시킬지도 결정할 수 있다.
+
+> Color에 opacity로 투명도 조절할수도있다.
+
+```swift
+RoundedRectangle(cornerRadius: 25)
+    .fill(Color("CustomColor"))
+    .frame(width: 200, height: 100)
+    // .shadow(radius: 20)
+    .shadow(color: Color.red.opacity(0.3), radius: 10, x: 20, y: 10)
+```
+
+### Gradient 넣기
+
+리니어
+```swift
+RoundedRectangle(cornerRadius: 25.0)
+    .fill(
+        LinearGradient(
+            gradient: Gradient(colors: [Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)), Color.blue]),
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    )
+    .frame(width: 300, height: 250)
+```
+
+방사형
+```swift
+RoundedRectangle(cornerRadius: 25.0)
+    .fill(
+        RadialGradient(
+            gradient: Gradient(colors: [Color.red, Color.blue]),
+            center: .topLeading,
+            startRadius: 5,
+            endRadius: 400
+        )
+    )
+    .frame(width: 300, height: 250)
 ```
