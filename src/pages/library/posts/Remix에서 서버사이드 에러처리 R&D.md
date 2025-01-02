@@ -6,13 +6,13 @@ description: "Remix에서 에러처리는 어떻게 해야 될까?"
 tags: ["error"]
 ---
 
-### Remix의 ErrorBoundary
+## Remix의 ErrorBoundary
 
 Remix의 ErrorBoundary는 공식문서에서도 확인할 수 있듯이, 서버 측에서도 동작합니다.
 
 따라서 ErrorBoundary내부에 console.log를 찍어봤을 때 서버측 로그를 보면 최초 로그는 console.log가 찍히지 않고, 두번째부터는 console.log가 찍혀있는 것을 확인할 수 있습니다.
 
-### 명시적으로 에러 띄우기
+## 명시적으로 에러 띄우기
 
 서버사이드에서 동작하는 `loader`에서 `throw json` 혹은 `throw new Response` 를 통해 에러 메세지와 status를 명시적으로 전달할 수 있습니다.
 
@@ -37,7 +37,7 @@ export function ErrorBoundary() {
 }
 ```
 
-### API 에러 띄우기
+## API 에러 띄우기
 
 만약에 `throw Error`나 `throw Json`같이 `throw` 키워드를 사용하지 않고, 에러를 띄웠을 경우를 실험해봤습니다.
 
