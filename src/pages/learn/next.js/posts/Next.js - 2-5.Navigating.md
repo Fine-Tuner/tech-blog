@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/MarkdownPostLayout.astro
+layout: ../../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-11-03
 title: '[Next.js][App Router] 5. Navigating'
 description: 'App Router'

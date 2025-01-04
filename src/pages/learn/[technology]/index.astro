@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import NavHeader from "../../../components/posts/NavHeader.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+import PostList from "../../../components/posts/PostList.astro";
+
+export async function getStaticPaths() {
+  const techStacks = ["next.js", "react"]; // 실제 기술 스택 목록
+  return techStacks.map((tech) => ({ params: { technology: tech } }));
+}
+
+const { technology } = Astro.params;
+
+// 각 기술 스택별 포스트를 가져오는 함수
+async function getTechPosts(tech: string) {
+  if (tech === "next.js") {
+    return await Astro.glob("../next.js/posts/*.md");
+  } else if (tech === "react") {
+    return await Astro.glob("../react/posts/*.md");
+  }
+  return [];
+}
+
+const posts = await getTechPosts(technology);
+
+const formatTitle = (tech: string) => {
+  return tech
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+---
+
+<BaseLayout>
+  <NavHeader />
+  <MainLayout title={formatTitle(technology)} description="기술 스택 포스트">
+    <PostList allPosts={posts} />
+  </MainLayout>
+</BaseLayout>

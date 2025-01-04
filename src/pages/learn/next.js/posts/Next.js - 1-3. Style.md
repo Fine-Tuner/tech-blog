@@ -1,6 +1,6 @@
 ---
 
-layout: ../../../layouts/MarkdownPostLayout.astro
+layout: ../../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-10-15
 title: '[Next.js][Pages Router] 3. Style'
 description: 'App Router'

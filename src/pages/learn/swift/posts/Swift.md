@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/MarkdownPostLayout.astro
+layout: ../../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-12-30
 title: "SwiftUI"
 description: "SwiftUI를 학습해보자."
@@ -30,7 +30,7 @@ UIKit는 AppStore가 등장한 2008년에 등장하여 기존 앱들은 UI Kit�
 
 좌측 파일 탐색기에서 제일 상단의 폴더를 클릭하면 금방 세팅한 프로젝트 설정 외에도 다양한 설정 기능들이 나온다.
 
-![](../images/2024-12-30-23-23-10.png)
+![](/learn/swift/images/2024-12-30-23-23-10.png)
 
 Version의 경우 외부에 공개할 버전이다. Build의 경우 만약에 1.0.1이라는 Version에서 버그가 발생해서 기능 추가나 개선 없이 bug만 잡고 퍼블리싱하는 경우 Build숫자를 올려서 고쳤음을 팀원들에게 알릴 수 있다.
 
@@ -40,7 +40,7 @@ Minimum Deployments의 경우 사용자가 사용할 수 있는 최소 버전을
 렌더링 될 방향을 정해놓을 수도 있다. Deployment Info > iPhone Orientation 에서 가로방향으로만 출력되게 하려면 Portrait와 Upside Down 체크박스를 해제한다. 반대로 세로방향으로만 출력되게 하려면 Portrait, Upside Down만 체크하거나 만약에 FaceID등을 반드시 사용해야 하는 앱의 경우 Portrait만 체크해서 기본적인 세로방향만 지원하도록 한다.
 
 앱 아이콘을 지정할 수 있다. App Icons and Launch Screen > App Icon의 이름을 지정할 수 있다. 여기서 지정할 아이콘의 asset폴더는 좌측 파일 탐색기에서 Assets폴더에서 확인할 수 있다.
-![](../images/2024-12-30-23-36-51.png)
+![](/learn/swift/images/2024-12-30-23-36-51.png)
 
 ## 컴포넌트
 
@@ -48,11 +48,11 @@ Minimum Deployments의 경우 사용자가 사용할 수 있는 최소 버전을
 
 우측 상단에 있는 + 버튼을 눌러서 원하는 요소를 검색할 수 있다.
 
-![](../images/2024-12-30-23-09-01.png)
+![](/learn/swift/images/2024-12-30-23-09-01.png)
 
 또한 이 텍스트에 대한 세부 설정을 하려면 우측 패널에서 제일 우측에 있는 설정 아이콘을 클릭하면 폰트를 변경하는 등의 세부 작업을 할 수 있다.
 
-![](../images/2024-12-30-23-12-20.png)
+![](/learn/swift/images/2024-12-30-23-12-20.png)
 
 코드로 작성할 경우 1번 방법처럼 폰트를 적용할 수도 있고, 2번 방법처럼 폰트를 적용할 수도 있다.
 
@@ -125,7 +125,7 @@ struct CircleTest: View {
 }
 ```
 
-![](../images/2025-01-02-14-52-31.png)
+![](/learn/swift/images/2025-01-02-14-52-31.png)
 
 > 추후 애니메이션을 Spinner를 만들 수 있다.
 
@@ -159,7 +159,7 @@ RoundedRectangle(cornerRadius: 25)
     .frame(width: 200, height: 100)
 ```
 
-![](../images/2025-01-02-15-13-53.png)
+![](/learn/swift/images/2025-01-02-15-13-53.png)
 
 ### 시스템 컬러 사용하기
 
@@ -175,7 +175,7 @@ RoundedRectangle(cornerRadius: 25)
 
 LNB > Assets에서 컬러를 직접 하나 만들어둘 수 있다.
 
-![](../images/2025-01-02-16-23-38.png)
+![](/learn/swift/images/2025-01-02-16-23-38.png)
 
 사용할 때는 다음과 같이 문자열을 넣어주면 된다.
 

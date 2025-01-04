@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/MarkdownPostLayout.astro
+layout: ../../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-11-09
 title: '[Next.js][App Router] Data Fetching'
 description: 'Data Fetching'

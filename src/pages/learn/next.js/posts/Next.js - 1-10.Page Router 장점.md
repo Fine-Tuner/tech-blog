@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/MarkdownPostLayout.astro
+layout: ../../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-11-03
 title: '[Next.js][Pages Router] 10. 정리'
 description: 'App Router'

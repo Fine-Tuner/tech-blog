@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/MarkdownPostLayout.astro
+layout: ../../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-11-09
 title: "[Next.js][App Router] Route Segment Option"
 description: "Route Segment Option"
