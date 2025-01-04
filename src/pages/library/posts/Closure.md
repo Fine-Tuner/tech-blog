@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/MarkdownPostLayout.astro
 pubDate: 2023-02-14
-title: '클로저 패턴을 사용해서 모듈화하기'
+title: '클로저 패턴을 사용해서 유지보수하기 좋도록 모듈화하기'
 description: '5000줄이 넘는 코드 속에서 특정 관심사를 모을 수는 없을까?'
 tags: ["dev"]
 ---
@@ -9,16 +9,16 @@ tags: ["dev"]
 
 ## 문제 상황
 
-수상시 채용 서비스가 출시되었다.
+기존에 몇천명, 몇만명 단위로 채용을 진행하던 내가 소속된 서비스 외에도  
+사람인, 원티드 같이 소규모로 수상시 채용할 수 있는 서비스를 사내 다른 팀에서 출시했다.
 
-기존에 있었던 채용 서비스의 회원들을 수상시 쪽으로 유도하기 위해
-지원자가 지원서 작성 버튼을 누를 때 바로 지원서 작성으로 가는 것이 아닌 신규 수상시 서비스의 로그인 페이지를 추가해야되는 상황이었다.
+기존에 있었던 채용 서비스의 회원들을 수상시 쪽으로 유도하기 위해 지원서 작성 버튼을 누르면 수상시 서비스의 로그인 페이지를 거치게 구현하는 것이 요구됐다.
 
 요구사항을 구현하기 위해서는 기존 레거시 프로젝트 여러 js파일들 중간중간에 소스를 삽입해야 됐다.
 
-문제는 그 1개의 js파일마다 최소 천 줄, 많개는 5천 줄까지 기존 코드가 있다보니 중간중간에 코드를 조금씩 넣게 되면 앞으로 유지보수가 어려워지거나 사이드가 발생했을 때 문제의 원인을 추적하기 어려울 것이라 판단되었다.
+문제는 각 js파일마다 몇 천줄의 기존 코드가 있다보니 중간중간에 코드를 조금씩 넣게 되면 앞으로 유지보수가 어려워지거나 사이드가 발생했을 때 문제의 원인을 추적하기 어려울 것이라 판단되었다.
 
-언제든지 일부던 전체던 롤백하기에 용이해야 했고, 앞으로 변경의 여지가 많을 것이기 때문에 독립적으로 관리할 수 있는 환경이 필요했다.
+고객사의 반대에 의해 롤백을 하거나 변경의 여지가 많을 요구사항이었기 때문에 독립적으로 관리할 수 있는 환경이 필요하다고 판단했다.
 
 
 
@@ -65,82 +65,26 @@ let RegistResume = (function() {
    * @type {{init(number): void, openJobdaLoginPopupAndLoadProfile(): void}}
    */
   const jobdaFn = (() => {
+    // 클로저 내부에서 관리될 private변수들
     let isJobda = false;
     const urlParmas = new URLSearchParams(window.location.href);
     const accessToken = urlParmas.get('accessToken');
 
     const checkJobda = () => {
-      $.ajax({
-        type: 'get', dataType: 'json',
-        url: ...,
-        async: false,
-      }).done(function(contractType, e) {
-        isJobda = contractType === 'JOBDA';
-        jdYn = contractType === 'JOBDA';
-      });
+      // 신규 수상시 서비스를 사용할 계약인지
     }
 
     const checkDirectEnter = () => {
-      Common.modal({
-        title: '올바르지 않은 방식의 접근',
-        width: '500',
-        height: '226',
-        btnTitle: '채용사이트 공고로 돌아가기',
-        enabledConfirm: false,
-        enabledCancel: false,
-        enabledCancelConfirm: false,
-        btnEvent() {
-          window.location.href = `${window.location.origin}/app/jobnotice/view?systemKindCode=MRS2&jobnoticeSn=${keyData.jobnoticeSn}`;
-        },
-        content: (function() {
-          let t = [];
-          t.push('<div style="font-size:14px;text-align:center">올바르지 않은 방식으로 접근하여 페이지를 찾을 수 없습니다.<br>정상적인 방법으로 다시 시도해 주세요.</div>');
-          return t.join('');
-        })()
-      });
-      return;
+      // 로그인 페이지를 건너뛰고 바로 진입했다면 돌려보낸다.
     }
 
     const loadJobdaUserProfile = (accessToken, jobnoticeSn) => {
-      const jobdaApiDomain = $('#jobdaApiDomain').val();
-
-      const param = {
-        recruitNoticeSn: jobnoticeSn,
-        accessToken: accessToken,
-      }
-
-      $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        beforeSend: Common.loading.show(),
-        url: `...`,
-        async: false,
-        data: param,
-      }).always(Common.loading.countHide).fail(Common.ajaxOnfail)
-        .done(function(data, e) {
-          const { name, email, mobile = '', certificated: isCertificated } = data;
-
-          // 사용자 정보 DOM에 삽입
-          $('#name').val(name);
-          $('#mobile1').val(mobile?.slice(0, 3));
-          $('#mobile2').val(mobile?.slice(3, 7));
-          $('#mobile3').val(mobile?.slice(7));
-          $('#email').val(email);
-          $('#emailConfirm').val(email);
-          $('#certificated').val(certificated.toString());
-
-          // 사용자 정보 입력되고 나서 이름, 이메일 바로 유효성 검증.
-          fn.checkName();
-          fn.checkEmail();
-          fn.checkConfirmFunc();
-        });
+      // 사용자 데이터 요청
     }
 
     return {
       init() {
-        if (keyData.jobnoticeSn > 0 && keyData.recruitTypeCode !== 'RECOMMEND' && keyData.recruitTypeCode !== 'PRIVATE') {
-          checkJobda();
-        }
+        checkJobda();
 
         if (isJobda) {
           // JF3 계약 시 생성된 공고인데 잡다 로그인 없이 url만으로 바로 들어왔을 때 채용사이트 공고로 다시 보낸다.

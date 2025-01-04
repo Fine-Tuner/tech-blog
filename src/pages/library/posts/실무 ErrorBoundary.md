@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/MarkdownPostLayout.astro
 pubDate: 2024-11-10
-title: "실무의 한 프로젝트에 적용되어있는 ErrorBoundary 분석"
+title: "선언형 에러처리 분석"
 description: "ErrorBoundary"
 tags: ["회고"]
 ---
@@ -11,9 +11,9 @@ tags: ["회고"]
 이전에 if kakao에서 공개한 에러처리 관련 내용을 보고 포스팅으로 기록한 적이 있다.
 이번에는 간단하게 현재 실무에 적용되어 있는 에러 처리를 분석해봤다.
 
-> 분석해보려고 한 이유는 10년도 더 지난 API들 + 개발 시간 부족으로 에러에 대한 협의없이 나온 API들이 혼재되어있는데, 어떤 식으로 에러가 처리되고 있는지 궁금해서이다.
+> 분석해보려고 한 이유는 10년도 더 지난 API들 + 개발 시간 부족으로 에러에 대한 협의없이 나온 API들이 혼재되어있는데, 어떤 식으로 에러가 처리되고 있는지 궁금해서다.
 
-최상단 route를 정의해놓은 부분이다.
+먼저, 최상단 route 파일은 다음과 같다.
 
 ```tsx title="router.tsx"
 <UnknownErrorBoundary>
@@ -29,7 +29,7 @@ tags: ["회고"]
 
 ## AuthorizationErrorBoundary
 
-AuthorizationErrorBoundary 내부에는 외부 라이브러리를 사용하지 않고, 커스텀으로 만든 ErrorBoundary를 사용하고 있다.
+Page를 감싸고 있는 AuthorizationErrorBoundary 내부에는 외부 라이브러리를 사용하지 않고, 커스텀으로 만든 ErrorBoundary를 사용하고 있다.
 
 fallback props에는 컴포넌트를 반환하는 콜백함수 혹은 바로 컴포넌트가 들어갈 수 있는데 여기서 error객체의 종류에 따라서 어떤 CustomErrorBounday에서 처리할지가 결정되게 된다.
 

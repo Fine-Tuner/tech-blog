@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/MarkdownPostLayout.astro
 pubDate: 2023-05-18
-title: '회사에서 chrome extension 제작기#2'
+title: '생산성 향상을 위해 회사에서 chrome extension 제작기 #2'
 description: 'chrome extension으로 업무 효율성을 올려보자.'
 tags: ["dev"]
 ---
