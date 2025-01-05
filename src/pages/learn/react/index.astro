@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import NavHeader from "../../../components/posts/NavHeader.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+import PostList from "../../../components/posts/PostList.astro";
+
+const allPosts = await Astro.glob("./posts/*.md");
+---
+
+<BaseLayout>
+  <NavHeader />
+  <MainLayout title="React" description="Javascript 라이브러리">
+    <PostList allPosts={allPosts} />
+  </MainLayout>
+</BaseLayout>
