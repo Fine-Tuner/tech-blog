@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import NavHeader from "../../../components/posts/NavHeader.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+import PostList from "../../../components/posts/PostList.astro";
+
+const allPosts = await Astro.glob("./posts/*.md");
+---
+
+<BaseLayout>
+  <NavHeader />
+  <MainLayout title="Next.js" description="React 기반의 풀스택 웹 프레임워크">
+    <PostList allPosts={allPosts} />
+  </MainLayout>
+</BaseLayout>
