@@ -337,3 +337,55 @@ Image(systemName: "heart.fill")
 ```
 
 ![](../images/2025-01-08-23-13-55.png)
+
+## Stacks
+
+VStack(Vertical), HStack(Horizontal), ZStacks(zIndex)
+
+ZStack에서는 제일 마지막이 제일 위다.
+
+> - 간격에 4말고 기본값으로 nil을 입력할 수도 있다. 8과 같다.
+> - ZStack위에 VStack, HStack등을 올리거나 복잡한 형태의 레이어를 만들 수 있다. 이 때 Bracket 위치를 찾기 힘들면 Bracket을 더블클릭 하면 된다.
+
+```swift
+VStack(alignment: .leading, spacing: 4, content: {
+    Rectangle()
+        .fill(Color.red)
+        .frame(width: 200, height: 100)
+
+    Rectangle()
+        .fill(.blue)
+        .frame(width: 150, height: 100)
+
+    Rectangle()
+        .fill(.green)
+        .frame(width: 100, height: 100)
+})
+```
+
+![](../images/2025-01-08-23-25-50.png)
+
+아래 두 코드는 같은 코드다. SwiftUI에서는 다양한 방법으로 UI 구성을 제공한다.
+
+```swift
+VStack(spacing: 50) {
+    Text("1")
+        .foregroundColor(.white)
+        .background(
+            Circle()
+                .fill(.black)
+                .frame(width: 100, height: 100)
+        )
+
+    ZStack {
+        Circle()
+            .fill(.black)
+            .frame(width: 100, height: 100)
+
+        Text("1")
+            .foregroundColor(.white)
+    }
+}
+```
+
+![](../images/2025-01-08-23-37-25.png)
