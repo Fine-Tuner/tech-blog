@@ -228,3 +228,112 @@ RoundedRectangle(cornerRadius: 25.0)
     )
     .frame(width: 300, height: 250)
 ```
+
+## Icon
+
+필요한 대부분 아이콘이 이미 존재한다.
+
+```swift
+Image(systemName: "heart.fill")
+    .resizable()
+    .aspectRatio(contentMode: .fit) // 프레임에 꽉 맞춘다.
+    // .scaledToFit() // 위와 같다.
+    // .font(.largeTitle)
+    .font(.system(size: 200))
+    // .foregroundStyle(.green)
+    .frame(width: 200, height: 200)
+    .clipped() // 프레임 영역 밖을 잘라낸다.
+```
+
+더 많은 아이콘을 확인하고 싶을 때는 https://developer.apple.com/sf-symbols/ 에 방문해서 SF Symbols를 다운받는다.
+그러면 종류를 볼 수 있고, 각 아이콘의 이름을 알 수 있다.
+
+multiColor아이콘의 경우, 색상이 입혀진다. 파란색 부분은 색상을 변경할 수 있다.
+이 아이콘들의 경우 renderingMode(.original)을 통해 apple이 지정해놓은 부분의 컬러의 original색상을 넣을 수 있다.
+
+```swift
+Image(systemName: "person.fill.badge.plus")
+    .renderingMode(.original)
+```
+
+## Image
+
+이미지 파일을 Assets폴더에 넣고 파일이름을 Image에 전달한다.
+원하는 크기로 자를 수도 있다.
+
+```swift
+Image("stair")
+    .resizable()
+    // .cornerRadius(30) borderRadius
+    .clipShape(Circle())
+```
+
+## Frames and Alignments
+
+Frame을 잘 다뤄야 배치를 잘할 수 있다.
+
+개발하는 동안에는 Frame에 배경을 추가해서 디버깅에 용이하게 할 수 있다.
+
+```swift
+Text("Hello World") // Layout: 제일 상단
+    .background(Color.red)
+    .frame(height: 100, alignment: .top) // Layout: 중단
+    .background(Color.green)
+    .frame(maxWidth: .infinity, alignment: .leading) // Layout: 하단
+    .background(Color.orange)
+```
+
+![](../images/2025-01-08-22-22-09.png)
+
+## Background & Overlay
+
+Background는 컨텐츠 뒤에있고 Overlay는 컨텐츠 위에 있다.
+
+overlay나 background에 (컨텐츠, alignment: 위치) 이런 식으로도 배치가 가능하다.
+
+```swift
+Rectangle()
+    .frame(width: 100, height: 100)
+    .overlay(
+        Rectangle()
+            .fill(.blue)
+            .frame(width: 50, height: 50)
+        , alignment: .topLeading // 주의: Rectangle의 위치가 아니라 Overlay의 두번째 인자로 주입한 위치다.
+    )
+    .background(
+        Rectangle()
+            .fill(.red)
+            .frame(width: 150, height: 150)
+    )
+```
+
+![](../images/2025-01-08-22-37-32.png)
+
+```swift
+Image(systemName: "heart.fill")
+    .font(.system(size: 40))
+    .foregroundStyle(Color.white)
+    .background(
+        Circle()
+            .fill(
+                LinearGradient(colors: [Color(.purple), Color(.blue)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            )
+            .frame(width: 100, height: 100)
+            .shadow(color: Color(#colorLiteral(red: 0.245982796, green: 0.4570168853, blue: 0.9919729829, alpha: 0.5)), radius: 10, x: 0.0, y: 10)
+            // circle의 위에 알람을 표시할 수 있다.
+            .overlay(
+                Circle()
+                    .fill(Color.blue)
+                    .frame(width: 35, height: 35)
+                    .overlay(
+                        Text("5")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                    )
+                    .shadow(color: Color(#colorLiteral(red: 0.245982796, green: 0.4570168853, blue: 0.9919729829, alpha: 0.5)), radius: 10, x: 5, y: 5)
+                , alignment: .bottomTrailing
+            )
+    )
+```
+
+![](../images/2025-01-08-23-13-55.png)
