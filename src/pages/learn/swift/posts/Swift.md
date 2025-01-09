@@ -389,3 +389,76 @@ VStack(spacing: 50) {
 ```
 
 ![](../images/2025-01-08-23-37-25.png)
+
+## Padding
+
+padding을 연속으로도 추가할 수 있다.
+컨텐츠 크기에 따라 동적으로 변하기 때문에 여태까지 위에서 했던 방식처럼 frame에 크기를 정해놓는 것이 아니라 padding을 사용해서 동적인 크기를 대응한다.
+
+```swift
+Text("Hello")
+  .padding(.all, 30)
+  .background(.blue)
+```
+
+실 사용 예시를 보면 아래와 같이 frame을 좌우로 꽉차게 하고 글씨를 좌측에 배치 한 뒤에 padding을 주입해서 살짝 떨어트린다.
+
+```swift
+Text("Hello, World")
+  .font(.largeTitle)
+  .fontWeight(.semibold)
+  .frame(maxWidth: .infinity ,alignment: .leading)
+  .padding(.leading, 30)
+```
+
+![](../images/2025-01-09-23-17-03.png)
+
+실 사용 예시 두번째다. 각 padding영역을 잘 확인할 수 있도록 코드를 나눠봤다.
+
+```swift
+VStack(alignment: .leading) {
+      Text("Hello, World")
+          .font(.largeTitle)
+          .fontWeight(.semibold)
+
+      Text("This is the description of what we will do on this screen. It is multiple lines and we will align the text to the leading edge.")
+          .multilineTextAlignment(.leading)
+  }
+  .background(.blue)
+
+  .padding(.horizontal, 30)
+  .background(.gray)
+
+  .padding(.all, 20)
+  .background(.green)
+```
+
+![](../images/2025-01-09-23-25-28.png)
+
+실 사용 예시 3
+
+> padding을 추가하고 background 메서드로 배경 색상 및 그림자를 한번에 추가하는 방법을 배울 수 있다.
+
+```
+ VStack(alignment: .leading) {
+      Text("Hello, World")
+          .font(.largeTitle)
+          .fontWeight(.semibold)
+
+      Text("This is the description of what we will do on this screen. It is multiple lines and we will align the text to the leading edge.")
+          .multilineTextAlignment(.leading)
+  }
+  .padding()
+  .background( // 배경 색상 및 그림자 추가
+      Color.white
+          .cornerRadius(10)
+          .shadow(
+              color: Color.black.opacity(0.3),
+              radius: 10,
+              x: 0.1,
+              y: 0.1
+      )
+  )
+```
+
+![](../images/2025-01-09-23-31-17.png)
