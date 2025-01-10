@@ -462,3 +462,84 @@ VStack(alignment: .leading) {
 ```
 
 ![](../images/2025-01-09-23-31-17.png)
+
+## Spacer
+
+- Spacer로 배치를 편하게 할 수 있다.
+- Spacer를 쓰면 자동으로 빈 영역을 채워줘서 배치를 편하게 해주는 느낌이다.
+- 동일한 스택 내에 Spacer가 여러 개 있으면 간격을 동일하게 가져간다.
+- minLength
+
+```swift
+HStack(spacing: 0) {
+    Spacer()
+        .frame(height: 10)
+        .background(.orange)
+
+    Rectangle()
+        .fill(.red)
+        .frame(width: 50, height: 50)
+
+    Rectangle()
+        .fill(.blue)
+        .frame(width: 50, height: 50)
+
+    Spacer()
+        .frame(height: 10)
+        .background(.orange)
+}
+```
+
+![](../images/2025-01-10-23-10-03.png)
+
+- Spacer내에 minLength를 주면 최소 범위를 가져간다.
+- 그래서 만약에 아래 코드처럼 padding이 좌우 공간을 다 먹어서 남은 간격이 없다면 Spacer는 나타나지 않는다.
+
+```swift
+HStack(spacing: 0) {
+    Spacer(minLength: 0)
+        .frame(height: 10)
+        .background(.orange)
+
+    Rectangle()
+        .fill(.red)
+        .frame(width: 50, height: 50)
+
+    Spacer(minLength: nil)
+        .frame(height: 10)
+        .background(.orange)
+
+    Rectangle()
+        .fill(.blue)
+        .frame(width: 50, height: 50)
+
+    Spacer(minLength: 0)
+        .frame(height: 10)
+        .background(.orange)
+}
+.background(.yellow)
+.padding(.horizontal, 200)
+.background(.gray)
+```
+
+실 사용 예제
+
+```swift
+VStack {
+    HStack{
+        Image(systemName: "xmark")
+        Spacer()
+            .frame(height: 10)
+            .background(.gray)
+        Image(systemName: "gear")
+    }
+
+    .padding(.horizontal)
+
+    Spacer()
+        .frame(width: 10)
+        .background(.orange)
+}
+```
+
+![](../images/2025-01-10-23-44-29.png)
