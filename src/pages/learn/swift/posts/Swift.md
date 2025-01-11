@@ -628,3 +628,43 @@ struct GradientTest: View {
     GradientTest()
 }
 ```
+
+## Scroll
+
+기본적으로 스크롤 가능하게 하려면 ScrollView안에 넣어야 한다.
+
+그 다음 스크롤바 렌더링 여부를 결정할 수 있다. ex) 인스타그램 같은 곳은 스크롤바를 없앴다.
+
+```swift
+ScrollView(.vertical, showsIndicators: false, content: {
+    VStack {
+        ForEach(0..<3) { i in
+            Rectangle()
+                .fill(.blue)
+                .frame(width: .infinity, height: 300)
+        }
+    }
+})
+```
+
+실 사용 예로는 아래처럼 할 수 있다.
+
+그리고 아직 화면에 보이지 않는 요소들을 Lazy하게 불러오기 위해서 LazyVStack, LazyHStack을 사용할 수 있다.
+
+```swift
+LazyVStack {
+    ForEach(0..<10) { _ in
+        ScrollView(.horizontal, showsIndicators: false, content: {
+            LazyHStack {
+                ForEach(0..<20) { _ in
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.gray)
+                        .frame(width: 200, height: 200)
+                }
+            }
+        })
+    }
+}
+```
+
+![](../images/2025-01-11-21-04-41.png)
