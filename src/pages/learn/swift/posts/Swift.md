@@ -543,3 +543,62 @@ VStack {
 ```
 
 ![](../images/2025-01-10-23-44-29.png)
+
+## Init, Enum
+
+### Init
+
+파라미터를 전달하는 View를 만들 때 init은 암묵적으로 만들어지지 않는다.  
+하지만, 아래처럼 "apple"을 받았을 때 빨간색 글자가 나오는 것 같은 조건을 걸 수 있다.  
+init은 View가 실행될 때 바로 실행된다.
+
+위에 변수를 선언해서 내부에서 반복적으로 사용할 수 있다.
+
+> 타입을 선언할 때는 대문자로 시작한다.
+
+### Enum
+
+enum의 위치를 밖에 만들어도 되고 구조체 안에 만들어도 동작한다.  
+내부에 case로 선언해두면 사용할 때 자동완성이 잘 된다.
+
+결과적으로 재사용이 가능한 View를 만들었다.
+
+```swift
+import SwiftUI
+
+enum fruits {
+    case apple
+    case banana
+}
+
+struct GradientTest: View {
+    let backgroundColor: Color
+    let title: String
+
+    // 매개변수로 title을 받는다.
+    init(title: String, fruit: fruits) {
+        self.title = title
+
+        if fruit == .apple {
+            self.backgroundColor = Color.red
+        } else {
+            self.backgroundColor = Color.orange
+        }
+    }
+
+    var body: some View {
+        Text(title)
+            .font(.largeTitle)
+            .foregroundColor(backgroundColor)
+    }
+}
+
+#Preview {
+    HStack {
+        GradientTest(title: "사과다", fruit: .apple)
+        GradientTest(title: "바나나다", fruit: .banana)
+    }
+}
+```
+
+![](../images/2025-01-11-20-09-18.png)
