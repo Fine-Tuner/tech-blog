@@ -602,3 +602,29 @@ struct GradientTest: View {
 ```
 
 ![](../images/2025-01-11-20-09-18.png)
+
+## ForEach
+
+반복문
+
+```swift
+import SwiftUI
+
+struct GradientTest: View {
+    let data: [String] = ["Hello", "World", "SwiftUI"]
+
+    var body: some View {
+        ForEach(data.indices) { index in
+            HStack {
+                Circle()
+                    .frame(width: 10, height: 10)
+                Text("\(data[index])의 인덱스 : \(index)")
+            }
+        }
+    }
+}
+
+#Preview {
+    GradientTest()
+}
+```
