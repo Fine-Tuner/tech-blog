@@ -741,7 +741,7 @@ var body: some View {
 
 Button은 인자로 Button내부에 들어갈 내용을 정의하고, 함수 내부에는 동작을 정의한다.
 
-아래 코드의 @State의 경우에는 추후 더 자세하게 다룬다.
+@State의 경우에는 View가 계속 주시하고 있다가 상태가 변경되면 리렌더링된다.
 
 ```swift
 struct StudySwiftUI: View {
@@ -799,3 +799,69 @@ struct StudySwiftUI: View {
 ```
 
 ![](../images/2025-01-12-17-42-11.png)
+
+## View 모듈 및 func
+
+뷰와 기능을 분리해서 설계하자.
+
+```swift
+struct StudySwiftUI: View {
+    @State var count: Int = 0
+
+    var body: some View {
+        Text("\(count)")
+        contentLayer
+    }
+
+    var contentLayer: some View {
+        Button(action: {
+            increaseCount()
+        }, label: {
+            Circle()
+                .fill(.white)
+                .frame(width: 100, height: 100)
+                .shadow(radius: 10)
+                .overlay(
+                    Image(systemName: "heart.fill")
+                        .font(.largeTitle)
+                        .foregroundColor(.red)
+                )
+
+        })
+    }
+
+    func increaseCount() {
+        count += 1
+    }
+}
+```
+
+## 값을 전달받을 수 있는 복잡한 컴포넌트와 간단한 컴포넌트 뷰
+
+```swift
+struct StudySwiftUI: View {
+    var body: some View {
+        contentView
+    }
+
+    // 매개변수가 없는 간단한 컴포넌트화
+    var contentView: some View {
+        VStack {
+            TextView(count: 1)
+            TextView(count: 100)
+        }
+    }
+}
+
+// 매개변수를 주입해줘야 하는 컴포넌트
+struct TextView: View {
+    let count: Int // 값을 매개변수로 받기 위해서는 할당하면 안된다.
+    var body: some View {
+        Text("숫자 : \(count)")
+    }
+}
+
+#Preview {
+    StudySwiftUI()
+}
+```
