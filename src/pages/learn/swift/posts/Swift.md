@@ -668,3 +668,134 @@ LazyVStack {
 ```
 
 ![](../images/2025-01-11-21-04-41.png)
+
+## LazyVGrid, LazyHGrid
+
+기본적으로 Grid는 Lazy하게 동작한다.
+
+```swift
+let columns: [GridItem] = [
+    GridItem(.fixed(50), spacing: nil, alignment: .center), // fixed로 가로크기를 정적으로 정할 수 있다.
+    GridItem(.fixed(50), spacing: nil, alignment: .center),
+    GridItem(.fixed(50), spacing: nil, alignment: .center)
+]
+
+var body: some View {
+    LazyVGrid(columns: columns, content: {
+        Rectangle()
+            .fill(Color.orange)
+            .frame(width: 50, height: 50)
+        Rectangle()
+            .fill(Color.red)
+            .frame(width: 50, height: 50)
+        Rectangle()
+            .fill(Color.blue)
+            .frame(width: 50, height: 50)
+        Rectangle()
+            .fill(Color.gray)
+            .frame(width: 50, height: 50)
+    })
+}
+```
+
+![](../images/2025-01-11-21-24-10.png)
+
+flexible하게 Grid를 배치할 수도 있다.
+GridItem의 첫번째 인자로 .flexible()을 전달한다.
+
+> 각 기기의 사이즈가 다르기 때문에 flexible하게 설계하는 것이 좋다.
+
+```swift
+let columns: [GridItem] = [
+    GridItem(.flexible(), spacing: nil, alignment: .center),
+    GridItem(.flexible(), spacing: nil, alignment: .center),
+    GridItem(.flexible(), spacing: nil, alignment: .center),
+    GridItem(.flexible(), spacing: nil, alignment: .center),
+    GridItem(.flexible(), spacing: nil, alignment: .center),
+]
+
+var body: some View {
+    LazyVGrid(columns: columns, content: {
+        ForEach(0..<50) { _ in
+            Rectangle()
+                .fill(Color.orange)
+                .frame(height: 50)
+            Rectangle()
+                .fill(Color.red)
+                .frame(height: 50)
+            Rectangle()
+                .fill(Color.blue)
+                .frame(height: 50)
+            Rectangle()
+                .fill(Color.gray)
+                .frame(height: 50)
+            Rectangle()
+                .fill(Color.gray)
+                .frame(height: 50)
+        }
+    })
+}
+```
+
+## Button
+
+Button은 인자로 Button내부에 들어갈 내용을 정의하고, 함수 내부에는 동작을 정의한다.
+
+아래 코드의 @State의 경우에는 추후 더 자세하게 다룬다.
+
+```swift
+struct StudySwiftUI: View {
+    @State var title: String = ""
+
+    var body: some View {
+        Button(action: {
+            self.title = "Pressed Button"
+        }, label: {
+            Text("Press Me")
+        })
+
+        Text(title)
+    }
+}
+```
+
+실 사용 예제로 스타일을 입힌 버튼과 좋아요 버튼을 만들어봤다.
+
+```swift
+struct StudySwiftUI: View {
+    @State var title: String = ""
+
+    var body: some View {
+        Text(title)
+        Button(action: {
+            self.title = "Pressed Button"
+        }, label: {
+            Text("Press Me")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+                .padding(.all, 20)
+                .background(Color.blue)
+                .cornerRadius(10)
+                .shadow(radius: 10)
+        })
+
+        Button(action: {
+            self.title = "Pressed Button"
+        }, label: {
+            Circle()
+                .fill(.white)
+                .frame(width: 100, height: 100)
+                .shadow(radius: 10)
+                .overlay(
+                    Image(systemName: "heart.fill")
+                        .font(.largeTitle)
+                        .foregroundColor(.red)
+                )
+
+        })
+    }
+}
+```
+
+![](../images/2025-01-12-17-42-11.png)
