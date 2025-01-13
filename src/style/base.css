@@ -204,9 +204,9 @@ li {
     --delay: 50ms;
     --start: 0ms;
     animation: enter 0.5s both;
-    animation-delay: calc(
+    /* animation-delay: calc(
       var(--lv) * var(--delay) + var(--lv-wait) * var(--delay) + var(--start)
-    );
+    ); */
   }
 
   [data-animate-speed="slow"] > * {
