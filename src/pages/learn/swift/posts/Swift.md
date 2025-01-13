@@ -865,3 +865,36 @@ struct TextView: View {
     StudySwiftUI()
 }
 ```
+
+## Binding
+
+- `@Binding var 변수: 타입`을 자식에서 선언하면 부모에서 상태를 내려받고 변경도 시킬 수 있다
+- 부모에서는 자식 View로 `childText(전달할변수명: $변수)` 이렇게 전달할 수 있다. 핵심은 전달할 State의 Prefix에 `$`를 붙이는 것이다.
+
+```swift
+struct studyView: View {
+    @State var backgroundColor: Color = .green;
+
+    var body: some View {
+        Button("changeColor", action: {
+            backgroundColor = .blue
+        })
+
+        childText(childrenBackgroundColor: $backgroundColor)
+    }
+}
+
+struct childText: View {
+    @Binding var childrenBackgroundColor: Color
+
+    var body: some View {
+        Text("Text")
+            .frame(width: 200, height: 200)
+            .background(childrenBackgroundColor)
+    }
+}
+
+#Preview {
+    studyView()
+}
+```
