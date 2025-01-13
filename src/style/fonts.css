@@ -1,13 +1,19 @@
 @font-face {
-  font-family: 'Pretendard Variable';
+  font-family: "Pretendard Variable";
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+  src: url("/fonts/PretendardVariable.woff2") format("woff2-variations");
 }
 
-
 @font-face {
+  font-family: "AritaBuri";
+  src: url("/fonts/AritaBuri/AritaBuriKR-Medium.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+/* @font-face {
   font-family: 'AritaBuri';
   src: url('/fonts/AritaBuri/AritaBuriKR-Bold.woff2') format('woff2');
   font-weight: bold;
@@ -15,13 +21,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'AritaBuri';
-  src: url('/fonts/AritaBuri/AritaBuriKR-Medium.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
 
 @font-face {
   font-family: 'AritaDotum';
@@ -37,4 +36,4 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
+} */

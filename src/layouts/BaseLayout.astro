@@ -17,17 +17,16 @@ const { pageTitle } = Astro.props;
     <title>{pageTitle}</title>
     <style></style>
     <ViewTransitions />
-    <link rel="preload" href="/fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
     <link
       rel="preload"
-      href="/fonts/AritaBuri/AritaBuriKR-Bold.woff2"
+      href="/fonts/AritaBuri/AritaBuriKR-Medium.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
     />
-    <link
+    <!-- <link
       rel="preload"
-      href="/fonts/AritaBuri/AritaBuriKR-Medium.woff2"
+      href="/fonts/AritaBuri/AritaBuriKR-Bold.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
@@ -45,11 +44,14 @@ const { pageTitle } = Astro.props;
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
-    />
+    /> -->
     <script is:inline>
       const theme = localStorage.getItem("theme");
 
-      if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      if (
+        theme === "dark" ||
+        (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
         document.documentElement.classList.add("dark");
       }
     </script>
