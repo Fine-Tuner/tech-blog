@@ -898,3 +898,45 @@ struct childText: View {
     studyView()
 }
 ```
+
+## 조건부 상태
+
+- ProgressView()를 이용하면 IOS특유의 내장된 로딩 UI를 보여줄 수 있다.
+
+```swift
+struct studyView: View {
+    @State var isShowCircle: Bool = false
+    @State var isShowRectangle: Bool = false
+    @State var isLoading: Bool = true
+
+    var body: some View {
+
+        if(isLoading) {
+            ProgressView() // 내장되어있다.
+        }
+
+        Button("isShowCircle: \(isShowCircle)", action: {
+            isShowCircle.toggle()
+        })
+
+
+        Button("isShowRectangle: \(isShowRectangle)", action: {
+            isShowRectangle.toggle()
+        })
+
+        if isShowCircle && isShowRectangle {
+            Text("Both condition")
+        } else if isShowRectangle {
+            Rectangle()
+                .frame(width: 200, height: 200)
+                .foregroundColor(.blue)
+        } else if isShowCircle && isShowRectangle {
+            Circle()
+                .frame(width: 200, height: 200)
+                .foregroundColor(.gray)
+        } else {
+            Text("not included")
+        }
+    }
+}
+```
