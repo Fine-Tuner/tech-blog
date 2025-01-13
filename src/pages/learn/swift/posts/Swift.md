@@ -940,3 +940,17 @@ struct studyView: View {
     }
 }
 ```
+
+상한 연산자는 다음과 같이 사용한다. 다른데와 동일하다.
+
+```swift
+struct studyView: View {
+    @State var isBlue: Bool = true
+    var body: some View {
+        RoundedRectangle(cornerRadius: 20)
+            .fill(isBlue ? .blue : .red)
+            .frame(width: 200, height: 200)
+
+    }
+}
+```
