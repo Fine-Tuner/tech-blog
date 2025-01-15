@@ -960,6 +960,8 @@ struct studyView: View {
 상태 변경에 따른 애니메이션을 아래와 같이 적용할 수 있다.
 특정 요소에 `.animation`을 쓰거나 Button의 action내부에 `withAnimation`을 쓸 수 있다.
 
+> animation 종류에 기본값으로 .default를 썼지만, 기본적으로 있는 .spring도 있는데 꽤 그럴듯하다.
+
 ```swift
 struct studyView: View {
     @State var isBlue: Bool = true
@@ -980,11 +982,210 @@ struct studyView: View {
             .frame(width: 200, height: 200)
             .rotationEffect(Angle(degrees: isBlue ? 360 : 0))
             .offset(y: isBlue ? 100 : 0)
-            .animation(Animation.default, value: isBlue)
+            .animation(Animation.default, value: isBlue) // 여기에 넣어도 동작은 한다.
     }
 }
 
 #Preview {
     studyView()
 }
+```
+
+## transition
+
+애니메이션은 직접 상태 변화를 감지하는 컨텍스트와 연결해야 한다.
+그래서 IOS15에서 그냥 animation이 depreacted되고 두번째 인자에 변화하는 상태를 넣어줘야 하는 것 같다.
+
+아래 코드에서 RoundedRectangle요소에 animation을 넣으면 원하는데로 동작하지 않는다.
+그래서 상태 변화 컨텍스트의 주체인 버튼과 연결해서 `withAnimation`을 사용한다.
+
+> 화면 하단 영역을 사용하기 위해서는 안전 영역을 제거해야 한다.  
+> `edgesIgnoringSafeArea(.bottom)`
+
+```swift
+import SwiftUI
+
+struct studyView: View {
+    @State var showView: Bool = false
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            VStack {
+                Button("Button: \(showView)") {
+                    withAnimation(.easeInOut) {
+                        showView.toggle()
+                    }
+                }
+                Spacer()
+            }
+
+            if(showView) {
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(height: UIScreen.main.bounds.height * 0.5)
+                    // .transition(.move(edge: .bottom))
+                    // .transition(.opacity.animation(.easeInOut))
+                    // .transition(.scale.animation(.easeInOut))
+
+                    // 들어올 때와 나갈 때를 다르게 할 수 있다.
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .leading),
+                        removal: .move(edge: .bottom)
+                    ))
+            }
+        }
+        .edgesIgnoringSafeArea(.bottom)
+    }
+
+}
+
+#Preview {
+    studyView()
+}
+```
+
+## sheet
+
+시트는 화면의 90% 정도를 덮는다.
+
+```swift
+import SwiftUI
+
+struct FirstView: View {
+    @State var showSheet: Bool = false
+    @State var showV1: Bool = false
+
+    var body: some View {
+        Button("Show Sheet: \(showSheet)") {
+            showSheet.toggle()
+        }
+
+        .sheet(isPresented: $showSheet, content: {
+            // 시트는 한번만 추가 가능하기 때문에 조건에 따라 다른 sheet를 넣는 로직은 에러가 발생한다.
+            SecondView(showSheet: $showSheet)
+        })
+    }
+
+}
+
+struct SecondView: View {
+    // 이거는 테스트용으로 추가해봤는데, 변수로도 제어가 가능했다.
+    @Binding var showSheet: Bool
+
+    // sheet로 열려있는 환경을 인지하고 dismissScreen을 호출하면 sheet를 닫는다.
+    @Environment(\.dismiss) var dismissScreen
+
+    var body: some View {
+        ZStack {
+            Color.gray.edgesIgnoringSafeArea(.all)
+
+            Button("Show Sheet: \(showSheet)") {
+                // showSheet.toggle()
+                dismissScreen()
+            }
+        }
+    }
+
+}
+
+#Preview {
+    FirstView()
+}
+```
+
+## FullScreenCover
+
+- FullScreenCover는 화면의 100%를 덮는다.
+- Sheet나 FullScreenCover 중 한 개만 사용가능하다.
+- Sheet와 다르게 손가락을 Slide해서 내릴 수 없다.
+- 사용방법은 Sheet와 동일하다.
+
+## Transition/Animation/Offset을 활용하여 Sheet/FullScreenCover 보다 커스텀 높은 화면 만들기
+
+### Transition이용하기
+
+transition을 이용해서 화면아래부터 올라오게 만들고 SecondView자체를 위에 Padding을 주는 방식
+
+```swift
+struct FirstView: View {
+    @State var showSheet: Bool = false
+
+    var body: some View {
+        Button("Show Sheet: \(showSheet)") {
+            showSheet.toggle()
+        }
+
+        VStack {
+            if showSheet {
+                SecondView(showSheet: $showSheet)
+                    .padding(.top, 100)
+                    .transition(.move(edge: .bottom))
+            }
+        }
+    }
+
+}
+
+struct SecondView: View {
+    @Binding var showSheet: Bool
+
+    var body: some View {
+        ZStack {
+            Color.gray.edgesIgnoringSafeArea(.all)
+
+            Button("Show Sheet: \(showSheet)") {
+                showSheet.toggle()
+            }
+        }
+        .zIndex(2.0)
+        .animation(.spring, value: showSheet)
+    }
+}
+
+#Preview {
+    FirstView()
+}
+
+```
+
+### Offset을 이용한 방법
+
+보여야 할 때는 y Offset을 화면에 꽉차게 한다.
+
+```swift
+struct FirstView: View {
+    @State var showSheet: Bool = false
+
+    var body: some View {
+        Button("Show Sheet: \(showSheet)") {
+            showSheet.toggle()
+        }
+
+        VStack {
+            SecondView(showSheet: $showSheet)
+                .padding(.top, 50)
+                .offset(y: showSheet ? UIScreen.main.bounds.height * 2 : 0)
+        }.animation(.spring(), value: showSheet)
+    }
+
+}
+
+struct SecondView: View {
+    @Binding var showSheet: Bool
+
+    var body: some View {
+        ZStack {
+            Color.gray.edgesIgnoringSafeArea(.all)
+
+            Button("Show Sheet: \(showSheet)") {
+                showSheet.toggle()
+            }
+        }
+        .zIndex(2.0)
+    }
+}
+
+#Preview {
+    FirstView()
+}
+
 ```
