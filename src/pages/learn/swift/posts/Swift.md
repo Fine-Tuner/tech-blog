@@ -954,3 +954,37 @@ struct studyView: View {
     }
 }
 ```
+
+## 애니메이션
+
+상태 변경에 따른 애니메이션을 아래와 같이 적용할 수 있다.
+특정 요소에 `.animation`을 쓰거나 Button의 action내부에 `withAnimation`을 쓸 수 있다.
+
+```swift
+struct studyView: View {
+    @State var isBlue: Bool = true
+
+    var body: some View {
+        Button("Toggle isBlue: \(isBlue)", action: {
+            isBlue.toggle()
+//            withAnimation(Animation
+//                .easeInOut(duration: 0.5)
+//                .repeatCount(2, autoreverses: true)
+//            ) {
+//                isBlue.toggle()
+//            }
+        })
+
+        RoundedRectangle(cornerRadius: isBlue ? 20 : 50)
+            .fill(isBlue ? .blue : .red)
+            .frame(width: 200, height: 200)
+            .rotationEffect(Angle(degrees: isBlue ? 360 : 0))
+            .offset(y: isBlue ? 100 : 0)
+            .animation(Animation.default, value: isBlue)
+    }
+}
+
+#Preview {
+    studyView()
+}
+```
