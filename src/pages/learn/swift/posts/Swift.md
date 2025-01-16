@@ -1189,3 +1189,86 @@ struct SecondView: View {
 }
 
 ```
+
+## NavigationView, NavigationTitle
+
+- 네비게이션 메뉴를 클릭하면 자연스럽게 우측으로 넘어가서 해당 페이지로 이동한다. 이전에 클릭했었던 NavigationTitle을 유지할 수 있다.
+- 기본 NavigationTitle을 사용하고 싶지 않다면 `.navigationBarHidden(true)`코드도 사용할 수 있다. 이 경우 뒤로가기 버튼이 없어지기 때문에 Sheet에서 했던 것처럼 할 수 있다. ex) `@Environment(\.dismiss) var dismissScreen`를 사용하기!
+
+```swift
+import SwiftUI
+
+struct FirstView: View {
+    var body: some View {
+        NavigationView(content: {
+            ScrollView {
+                NavigationLink("Hello world", destination: {
+                    SecondView()
+                })
+            }
+            .navigationTitle("All Inboxes") // 메인 페이지의 Navigation Title
+        })
+    }
+}
+
+struct SecondView: View {
+    var body: some View {
+        ZStack {
+            Color.green.edgesIgnoringSafeArea(.all)
+                .navigationTitle("This is Second View Navigation Title") // All Inboxes가 원래 작게 나오면서 그 페이지에 있다고 알려주는데, 타이틀을 변경한 것.
+            NavigationLink("lets go Thrid Page", destination: {
+                Text("This is third page") // 3번째 화면의 경우 NavigationTitle을 지정해주지 않아 이전 페이지에서 클릭해서 들어온 네비게이션 타이틀이 출력
+            })
+        }
+    }
+}
+
+#Preview {
+    FirstView()
+}
+```
+
+- Navigation bar 커스텀도 할 수 있다.
+- `.navigationbarItems`는 deprecated 되었기 때문에 `.toolbar`를 사용할 수도 있다.
+
+```swift
+import SwiftUI
+
+struct FirstView: View {
+    var body: some View {
+        NavigationView(content: {
+            ScrollView {
+                NavigationLink("Hello world", destination: {
+                    SecondView()
+                })
+            }
+            .navigationTitle("All Inboxes") // 메인 페이지의 Navigation Title
+        })
+    }
+}
+
+struct SecondView: View {
+    @Environment(\.dismiss) var dismissScreen
+
+    var body: some View {
+        ZStack {
+            Color.green.ignoresSafeArea(.all)
+                .toolbar { // toolbar 를 커스텀 할 수 있다.
+                    ToolbarItemGroup(placement: .navigationBarLeading, content: { // ToolbarItemGroup을 만들고 Title 위에 아이콘을 붙인다.
+                        Button {
+                            dismissScreen()
+                        } label: {
+                            Image(systemName: "person.fill")
+                        }
+                    })
+                }
+
+            Text("This is Second Screen")
+        }
+    }
+}
+
+#Preview {
+    FirstView()
+}
+```
