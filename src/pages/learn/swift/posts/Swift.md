@@ -61,3 +61,67 @@ func calcNumber() -> Int {
     return number1 + number2
 }
 ```
+
+## Optional
+
+- Typescript를 쓸 때처럼 Optional이 존재한다.
+- swift에서는 nil값을 명시적으로 처리할 수 있도록 도와준다.
+- Optional은 값을 가질 수도 있고 nil일 수도 있음을 의미한다.
+- `!`키워드를 붙여서 값이 있음을 명시적으로 나타낼 수 있으나, 만약 값이 nil일 경우 런타임 에러가 발생하니 주의한다.
+- if let이나 guard let을 사용해서 Optional값을 안전하게 언래핑한다.
+
+```swift
+let name: String? = "Even"
+
+// name이 truty하다면 unwrappedName 상수에 name값을 넣는다.
+if let unwrappedName = name {
+    print(unwrappedName) // "Even"
+} else {
+    print("name is nil")
+}
+```
+
+guard let
+
+```swift
+func greet(_ name: String?) {
+    // 쉼표를 이용해서 여러 변수를 넣을 수도 있다. 모두 truty할 때 guard 아래 print문들이 실행된다.
+    guard let unwrappedName = name, let secondName = name else {
+        print("name is nil")
+        return
+    }
+    print("Hello, \(unwrappedName)!")
+    print("Hello, \(secondName)!")
+}
+greet("Even") // "Hello, Even!"
+greet(nil)    // "name is nil"
+```
+
+- 기본값을 제공해주기 위해서 Typescript에서 null 병합연산자처럼 nil일 때 기본값을 할당할 수 있다.
+
+```swift
+let name: String? = nil
+let displayName = name ?? "Guest"
+print(displayName) // "Guest"
+```
+
+Optional Chaning을 이용해서 Optional 타입의 프로퍼티나 메서드에 안전하게 접근도 가능하다.
+
+```swift
+class Person {
+    var name: String?
+    var address: Address?
+}
+
+class Address {
+    var city: String?
+}
+
+let person = Person()
+person.address = Address()
+person.address?.city = "Seoul"
+
+if let city = person.address?.city {
+    print("City is \(city)") // "City is Seoul"
+}
+```
