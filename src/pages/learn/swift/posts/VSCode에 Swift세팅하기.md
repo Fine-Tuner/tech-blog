@@ -38,3 +38,46 @@ XCode에서 SwiftUI를 확인할 때처럼 실시간 수정사항도 확인 가�
 6. Xcode에서 Build Settings를 아래사진처럼 Other Linker Flags에 Flag들을 추가해준다.
    ![](../images/2025-01-19-17-52-21.png)
 7. Xcode에서 다시 빌드하면 성공!
+
+## 최종 코드
+
+코드는 다음과 같은 상태여야 한다.
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+
+  var body: some View {
+    VStack {
+      Image(systemName: "globe")
+        .imageScale(.large)
+        .foregroundStyle(.tint)
+      Text("Hello, world10")
+      SecondView()
+    }
+    .padding()
+  }
+
+}
+
+struct SecondView: View {
+  var body: some View {
+    VStack {
+      Image(systemName: "globe")
+        .imageScale(.large)
+        .foregroundStyle(.tint)
+      Text("Hello, world21")
+    }
+    .padding()
+  }
+
+}
+
+#Preview {
+  @ObserveInjection var forceRedraw
+
+  ContentView()
+    .enableInjection()
+}
+```
