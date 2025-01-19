@@ -41,7 +41,10 @@ XCode에서 SwiftUI를 확인할 때처럼 실시간 수정사항도 확인 가�
 
 ## 최종 코드
 
-코드는 다음과 같은 상태여야 한다.
+코드는 다음과 같이 필수로 2가지가 추가되어 있어야 한다.
+
+- @ObserveInjection var forceRedraw
+- .enableInjection()
 
 ```swift
 import SwiftUI
@@ -81,3 +84,20 @@ struct SecondView: View {
     .enableInjection()
 }
 ```
+
+## 주의사항
+
+### 변수가 반영되지 않는 현상
+
+실험을 하다보니까, 단점이 발견됐다.
+TodoList를 만들어서 확인해보는데 상태의 변경을 따라가지 못하는 문제가 있었다.
+
+XCode의 Preview에서는 바로바로 바뀌는데, 별도로 결과물을 띄워서 보는 방식에서는 변수가 아닌것들은 잘 바뀌는데 변수가 잘 안뷔었다.
+
+아래 사진처럼 99같은 변수는 값이 안바뀌고 제목같은 거는 바로바로 바뀌었다.
+
+![](../images/2025-01-19-20-20-41.png)
+
+### 불필요한 코드가 추가되는 현상
+
+Injection 앱의 prepare을 해보면 `.enableInjection()` 코드와 `@ObserveInjection var forceRedraw` 를 삽입한다. 이로서 비즈니스 로직을 파악하는데 불필요한 코드들이 각 화면들마다 추가되거나 해서 복잡하게 느껴진다.
