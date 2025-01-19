@@ -101,3 +101,23 @@ XCode의 Preview에서는 바로바로 바뀌는데, 별도로 결과물을 띄�
 ### 불필요한 코드가 추가되는 현상
 
 Injection 앱의 prepare을 해보면 `.enableInjection()` 코드와 `@ObserveInjection var forceRedraw` 를 삽입한다. 이로서 비즈니스 로직을 파악하는데 불필요한 코드들이 각 화면들마다 추가되거나 해서 복잡하게 느껴진다.
+
+## SwiftLint
+
+brew install swiftlint 후에 `Root > .vscode` 폴더를 만들고 아래 입력 시 저장만 하면 코드 정렬 자동으로 되고, XCode에서 뜨는 에러도 동일하게 알려준다.
+
+```swift
+{
+  "sweetpad.build.xcodeWorkspacePath": "PDF.xcodeproj/project.xcworkspace",
+  "sweetpad.tuist.autogenerate": true,
+  "[swift]": {
+    "editor.defaultFormatter": "sweetpad.sweetpad",
+    "editor.formatOnSave": true
+  }
+}
+```
+
+## 결과 : 결과적으로 나는 어떻게 작업하고 있는가?
+
+코드 에디팅은 VSCode나 Cursor에서 하고 미리보기만 XCode에서 확인하는 수준 정도는 좋은 것 같다.
+VSCode에서 별도의 핸드폰 창 띄우고 실시간 연동하는 것도 성공해봤는데 몇 가지 단점 발견으로 인해서 그냥 코드 수정 정도만 하는 정도로 하면 딱 적당히 좋은 것 같다.
