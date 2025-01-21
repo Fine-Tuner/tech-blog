@@ -174,6 +174,8 @@ print(point2.x) // 5
 
 #### Class (클래스)
 
+> let으로 인스턴스를 만들고 내부 프로퍼티를 변경할 수 있다. 참조타입이기 때문이다. 일반적으로 참조를 변경하지 않는 경우에는 let을 우선 사용하는 것이 더 안전하고 가독성을 높인다. 필요 시에만 var를 사용하는 방식이 추천된다. JS를 할 때도 const를 우선 사용하고, 변수가 필요 시에 let으로 전환하는 식으로 하는 습관이 좋다.
+
 ```swift
 class Point {
     var x: Int
@@ -200,28 +202,227 @@ print(point1.x) // 5 (같은 인스턴스를 참조)
 - 인스턴스 간 독립성이 중요한 경우.
 - 데이터의 생명 주기가 짧고, 가볍게 처리할 수 있을 때.
 
+예를 들어서 알아보자.
+
+- 데이터 중심의 객체 : 주로 데이터를 저장하고, 전달하는 데 사용되는 객체
+
+```swift
+struct User {
+    var name: String
+    var age: Int
+}
+
+let user1 = User(name: "Alice", age: 25)
+var user2 = user1
+user2.name = "Bob"
+
+print(user1.name) // "Alice" (원본 객체는 변경되지 않음)
+print(user2.name) // "Bob"
+```
+
+- 경량 객체 : 데이터의 간단한 표현
+
+```swift
+struct Rectangle {
+    var width: Double
+    var height: Double
+
+    func area() -> Double {
+        return width * height
+    }
+}
+
+let rect = Rectangle(width: 10, height: 20)
+print(rect.area()) // 200.0
+```
+
 #### Class를 사용해야 하는 경우:
 
 참조를 통해 여러 곳에서 동일한 데이터를 공유해야 할 때.
 데이터가 복잡하거나 생명 주기가 길 경우.
 상속이 필요한 경우.
 
+마찬가지로 예시로 알아보자.
+
+상태를 공유해야 하는 객체일 경우 : 위에서 설명했듯이 인스턴스들이 동일한 메모리 주소를 참조한다.
+
 ```swift
-import UIKit
+class Device {
+    var name: String
+    var isOn: Bool
 
-struct Quiz {
-    let title: String
-    let dateCreated: Date
-    let isPremium: Bool?
-
-    init(title: String, dateCreated: Date = .now, isPremium: Bool?) {
-        self.title = title
-        self.dateCreated = dateCreated
-        self.isPremium = isPremium
+    init(name: String, isOn: Bool) {
+        self.name = name
+        self.isOn = isOn
     }
 }
 
-let myQuiz: Quiz = Quiz(title: "타이틀", isPremium: true)
+let device1 = Device(name: "iPhone", isOn: true)
+let device2 = device1
+device2.isOn = false
 
-print(myQuiz.title)
+print(device1.isOn) // false (참조로 인해 같은 객체를 수정)
+```
+
+상속과 다형성
+
+```swift
+class Vehicle {
+    var speed: Double = 0.0
+
+    func describe() -> String {
+        return "Speed: \(speed) km/h"
+    }
+}
+
+class Car: Vehicle {
+    var brand: String
+
+    init(brand: String, speed: Double) {
+        self.brand = brand
+        super.init()
+        self.speed = speed
+    }
+
+    override func describe() -> String {
+        return "\(brand) is moving at \(speed) km/h"
+    }
+}
+
+let car = Car(brand: "Tesla", speed: 120)
+print(car.describe()) // "Tesla is moving at 120 km/h"
+```
+
+정리하면 다음과 같다.
+
+구체적인 기준
+
+- 데이터의 불변성 유지: 데이터를 복사하여 다룬다면 struct를 사용.
+- 상속이 필요한 경우: class를 사용.
+- 데이터 공유: 여러 객체에서 데이터를 공유해야 한다면 class.
+- 멀티스레드 안전성: 값 타입(struct)은 스레드 간 상태 공유를 피할 수 있어 안전.
+- 성능 고려:
+  struct는 작은 데이터와 함수 중심 작업에 적합.
+  class는 큰 데이터와 복잡한 상태 관리가 필요한 경우에 적합.
+
+일반적으로 struct를 기본으로 사용하고, class는 꼭 필요한 경우에만 사용하는 것이 권장된다고 한다.
+
+핵심 결론은 다음과 같다.
+
+- class는 상태 관리와 공유, 생명주기 관리가 필요한 경우에 적합하다.
+- struct는 불변 데이터 모델링이나 값 복사가 자연스러운 상황에 적합하다.
+
+추가로 만약 Struct에서 프로퍼티를 변경하려는 경우 각 메서드에 mutating키워드를 붙여줘야 한다.
+
+```swift
+struct NetworkManager {
+    var isConnected: Bool = false
+
+    mutating func connect() {
+        isConnected = true
+        print("Connected to the network")
+    }
+
+    mutating func disconnect() {
+        isConnected = false
+        print("Disconnected from the network")
+    }
+}
+```
+
+## Enum
+
+Swift에서 Enum을 다루는 방법에는 정말 다양한 방법이 있다. 그 중에서 대표적으로 몇 가지 방법을 알아보자.
+
+```swift
+enum Direction {
+    case north
+    case south
+    case east
+    case west
+}
+
+func travel(direction: Direction) {
+    switch direction {
+    case .north:
+        print("Heading North!")
+    case .south:
+        print("Heading South!")
+    case .east:
+        print("Heading East!")
+    case .west:
+        print("Heading West!")
+    }
+}
+
+let currentDirection = Direction.east
+travel(direction: currentDirection) // Heading East!
+```
+
+아래처럼 원시값을 할당할 수 있는 방법도 있다.
+
+```swift
+enum Status: String {
+    case success = "Success"
+    case failure = "Failure"
+    case pending = "Pending"
+}
+
+func printStatus(_ status: Status) {
+    print("Current status is: \(status.rawValue)")
+}
+
+let status = Status.success
+printStatus(status)
+```
+
+Enum에 메서드를 추가할수도 있다.
+
+```swift
+enum CompassPoint {
+    case north, south, east, west
+
+    func description() -> String {
+        switch self {
+        case .north:
+            return "North is up!"
+        case .south:
+            return "South is down!"
+        case .east:
+            return "East is right!"
+        case .west:
+            return "West is left!"
+        }
+    }
+}
+
+let direction = CompassPoint.north
+print(direction.description())
+```
+
+## deinit
+
+class에서는 `deinit`을 통해 메모리 참조를 해제할 수 있다.
+
+아래는 파일 핸들러를 정리하는 예제코드다.
+
+```swift
+class FileHandler {
+    let fileName: String
+
+    init(fileName: String) {
+        self.fileName = fileName
+        print("\(fileName) opened")
+    }
+
+    deinit {
+        print("\(fileName) closed")
+    }
+}
+
+var file: FileHandler? = FileHandler(fileName: "example.txt")
+// "example.txt opened" 출력
+
+file = nil
+// "example.txt closed" 출력
 ```
