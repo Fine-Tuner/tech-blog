@@ -426,3 +426,41 @@ var file: FileHandler? = FileHandler(fileName: "example.txt")
 file = nil
 // "example.txt closed" 출력
 ```
+
+## public, private
+
+특이한건 private(set)이다. 읽을 수는 있지만 set할 수는 없다.
+
+```swift
+struct MovieModel {
+    let title: String
+
+    // 방법1
+    private(set) var isFavorite: Bool
+
+    mutating func updateFavoriteStatus(newValue: Bool) {
+        isFavorite = newValue
+    }
+
+    // 방법2
+    // let isFavorite으로 만들었을 경우 아래 방법도 가능하다.
+//    func updateFavoriteStatus(newValue: Bool) -> MovieModel {
+//        MovieModel(title: title, isFavorite: newValue)
+//    }
+}
+
+class MovieManager {
+    public var movie1 = MovieModel(title: "Avengers", isFavorite: false)
+    private var movie2 = MovieModel(title: "Avengers2", isFavorite: false)
+
+    // read: public, set: private
+    // private(set) var movie2 = MovieModel(title: "Avengers2", isFavorite: false)
+}
+
+
+let manager = MovieManager()
+
+manager.movie1.updateFavoriteStatus(newValue: true)
+print(manager.movie1) // true로 변경된 Avengers가 나온다.
+
+```
