@@ -464,3 +464,41 @@ manager.movie1.updateFavoriteStatus(newValue: true)
 print(manager.movie1) // true로 변경된 Avengers가 나온다.
 
 ```
+
+## Functions and closer
+
+> [Swift docs](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour/)
+
+- `\`를 파라미터 앞에 붙이면 인수를 전달할 때 값만 전달할 수 있다.
+- 혹은 인자 앞에 원하는 단어를 넣으면 인수를 전달할 때 그 원하는 단어로 전달할 수 있다.
+
+```swift
+func greet(_ person: String, on day: String) -> String {
+    return "Hello \(person), today is \(day)."
+}
+greet("John", on: "Wednesday")
+```
+
+## Dictionary
+
+Swift에서는 배열안에 객체처럼 넣는 구조인 Dictonary 자료구조가 있다.
+
+반복문을 통해서 순회가 가능한데, 아래 예제를 보면 특별한게 for 소괄호에 첫번째 인자는 키를 뜻하고 두번째 인자는 그 키의 값을 뜻하는데 자동으로 맨 마지막 키까지 순회하면서 값을 비교하는 것을 볼 수 있다.
+
+```swift
+let interestingNumbers = [
+    "Prime": [2, 3, 5, 7, 11, 13],
+    "Fibonacci": [1, 1, 2, 3, 5, 8],
+    "Square": [1, 4, 9, 16, 25],
+]
+var largest = 0
+for (_, numbers) in interestingNumbers {
+    for number in numbers {
+        if number > largest {
+            largest = number
+        }
+    }
+}
+print(largest)
+// Prints "25"
+```
