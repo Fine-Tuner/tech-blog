@@ -11,7 +11,33 @@ tags: ["Swift"]
 ## basic
 
 - 상수는 `let` 변수는 `var`를 사용한다.
+- 타입을 초반에 할당해주지 않아도 된다. 자동으로 타입추론 한다. 만약에 초기값을 할당할 수 없는 경우에는 타입을 명시해준다.
+- 암묵적으로 타입이 변환되지 않고, 명시적으로 변환해줘야 한다.
+
+```swift
+let label = = "The Width is "
+let width = 94
+let widthLabel = label String(width)
+```
+
 - 타입 `Int`는 숫자고 `Double`과 `CGFloat`은 소수점까지 포함이다. 숫자 계산을 할 때(소수점이 나올 수 있음)는 `Double`을 쓰고 UI에 사용하기 위해 글꼴 크기라던지 그런데에 사용할 때는 `CGFloat`을 사용한다.
+- 문자열 안에 표현식을 넣으려면 다음과 같이 한다.
+
+```swift
+let orange = 3
+let banana = 5
+
+let fruitSummary = "I have \(orange + banana)"
+```
+
+- 쌍따음표를 3개 사용하면 여러 줄을 작성할 수 있다.
+
+```swift
+let quotation = """
+    Even though there's whitespace to the left,
+    the actual lines aren't indented.
+"""
+```
 
 ## guard
 
@@ -473,15 +499,47 @@ print(manager.movie1) // true로 변경된 Avengers가 나온다.
 - 혹은 인자 앞에 원하는 단어를 넣으면 인수를 전달할 때 그 원하는 단어로 전달할 수 있다.
 
 ```swift
-func greet(_ person: String, on day: String) -> String {
-    return "Hello \(person), today is \(day)."
+func greet(_ name: String, on prefix: String) -> String {
+    return "Hello \(prefix) \(name)"
 }
-greet("John", on: "Wednesday")
+print(greet("taejoon", on: "hoho"))
+```
+
+### Tuple
+
+함수에서 Tuple 형태로 반환도 가능하다. 참조할 때는 특정 String혹은 index로 참조할 수 있다.
+
+```swift
+func calculateStatics(scores: [Int]) -> (min: Int, max: Int, sum: Int) {
+
+    var min = scores[0]
+    var max = scores[1]
+    var sum = 0
+
+    for score in scores {
+        sum += score
+
+        if score < min {
+            min = score
+        } else if max < score {
+            max = score
+        }
+    }
+
+    return (min, max, sum)
+}
+
+let result = calculateStatics(scores: [1, 2, 3])
+print(result.0) // min
+print(result.1) // max
+print(result.sum)
 ```
 
 ## Dictionary
 
 Swift에서는 배열안에 객체처럼 넣는 구조인 Dictonary 자료구조가 있다.
+
+> 일반적으로 요소들을 쭉 나열하면 배열이고, 객체처럼 쓰면 Dictonary 구조다.
 
 반복문을 통해서 순회가 가능한데, 아래 예제를 보면 특별한게 for 소괄호에 첫번째 인자는 키를 뜻하고 두번째 인자는 그 키의 값을 뜻하는데 자동으로 맨 마지막 키까지 순회하면서 값을 비교하는 것을 볼 수 있다.
 
@@ -492,13 +550,121 @@ let interestingNumbers = [
     "Square": [1, 4, 9, 16, 25],
 ]
 var largest = 0
-for (_, numbers) in interestingNumbers {
-    for number in numbers {
-        if number > largest {
-            largest = number
+
+for(interesting, numbers) in interestingNumbers {
+    for num in numbers {
+        if num > largest {
+            largest = num
+            print("interesting is \(interesting)", "num is \(num)", "largest is \(largest)")
         }
     }
 }
-print(largest)
-// Prints "25"
+
+print(largest) // 25
+
+```
+
+## Control Flow
+
+### For in
+
+```swift
+var fruits = ["apple", "banana"]
+var count = 0
+
+for fruit in fruits {
+    if fruit == "apple" { // 값 비교는 동등 비교 연산자를 써야 한다.
+        count += 1
+    } else {
+        count += 2
+    }
+}
+
+print(count) // 3
+```
+
+### if
+
+Swift에서는 암묵적인 타입 변환이 되지 않는다.
+if 조건문에는 반드시 Bool 타입이 들어가야 한다. (Int타입으로 0이 들어갔을 때 암묵적변환으로 false가 될 것이라고 기대하면 안된다)
+
+> 할당문이나 return 문 뒤에 if문이나 swift문을 사용할 수 있다.
+
+```swift
+let count = if true {
+    1
+} else {
+    2
+}
+
+
+print("count is \(count)")
+```
+
+```swift
+let count = 1
+
+let name = switch count {
+    case 1:
+        "taejoon"
+    case 2:
+        "samook"
+    default:
+        "unknown"
+}
+
+
+print("name is \(name)") // name is taejoon
+```
+
+### if let
+
+Optional 타입을 사용한 변수가 true일 때 `if let 변수`부분에 값을 할당할 수 있다.
+
+```swift
+var optionalName: String? = "joon"
+
+if let name = optionalName {
+    print("name is \(name)")
+} else {
+    print("unknown")
+}
+```
+
+혹은 `??` Operator를 사용해서 nil일 경우 기본값을 줄 수 있다.
+
+```swift
+var optionalName: String? = "joon"
+
+print("name is \(optionalName ?? "unknown name")")
+```
+
+혹은 새로운 변수명으로 할당하지 않고 해당 변수가 true일 때 block 내부문안에서 truty한 변수를 사용할 수 있다.
+
+```swift
+var optionalName: String? = "joon"
+
+if let optionalName {
+    print("name is \(optionalName)")
+}
+```
+
+### switch
+
+switch의 case문에 다양한 형태로 사용가능하다.
+
+```swift
+let fruit = "apple fruit"
+
+
+switch fruit {
+    case "apple":
+        print("fruit is apple")
+    case "banana", "carrot":
+        print("twin")
+    case let suffix where fruit.hasSuffix("fruit"):
+        print("suffix is fruit")
+    default:
+        print("default")
+}
 ```
