@@ -668,3 +668,205 @@ switch fruit {
         print("default")
 }
 ```
+
+### func
+
+다양한 함수 형태를 연습한다.
+
+내부 함수는 외부함수 내부의 변수를 참조할 수 있다.
+
+```swift
+func returnFifteen() -> Int {
+    var y = 10
+    func add() {
+        y += 5
+    }
+    add()
+    return y
+}
+returnFifteen()
+```
+
+함수를 반환할 수 있다.
+
+```swift
+func makeIncrementer() -> ((Int) -> Int) {
+    func addOne(number: Int) -> Int {
+        return 1 + number
+    }
+    return addOne
+}
+var increment = makeIncrementer()
+increment(7)
+```
+
+함수의 인자로 콜백함수를 전달할 수 있다.
+
+```swift
+func hasAnyMatches(list: [Int], condition: (Int)->Bool)->Bool {
+    for item in list {
+        if condition(item) {
+            return true
+        }
+    }
+    return false
+}
+
+func lessThanTen(number: Int)->Bool {
+    return number < 10
+}
+
+
+let numbers = [10, 20]
+hasAnyMatches(list: numbers , condition: lessThanTen)
+```
+
+## map
+
+- `in`은 이제 본문이 나올 것임을 나타낸다.
+- 아래 로직은 다 동일한 결과를 반환한다.
+
+```swift
+let numbers = [1, 2, 10, 20]
+
+// 1: 원본 코드
+let result = numbers.map({
+    (number: Int) -> Int in
+    let result = 3 * number
+    return result
+})
+
+// 버전 2: 타입 추론으로 타입 선언 생략
+let result = numbers.map({ number in
+    return 3 * number
+})
+
+// 버전 3: return 생략
+let result = numbers.map({ number in 3 * number })
+
+// 버전 4: 파라미터 이름 대신 $0 사용
+let result = numbers.map({ $0 * 3 })
+
+// 버전 5: 후행 클로저 문법 사용
+let result = numbers.map { $0 * 3 }
+```
+
+## class
+
+init을 생략
+
+```swift
+class Shape {
+    var name: String = ""
+
+    func description() -> String {
+        return "Shape \(name)"
+    }
+}
+
+let shape = Shape()
+
+shape.name = "circle"
+print(shape.description()) // Shape circle
+```
+
+init을 사용한 형태
+
+```swift
+class Shape {
+    var name: String = ""
+
+    init(name: String) {
+        self.name = name
+    }
+
+    func description() -> String {
+        return "Shape \(name)"
+    }
+}
+
+let shape = Shape(name: "circle")
+
+print(shape.description()) // Shape circle
+```
+
+- SuperClass와 SubClass는 콜론으로 구별한다.
+- SubClass에서 `super.`형태로 SuperClass에 접근 가능하다.
+- `override func` 같은 형태로 함수를 덮어쓸 수 있다.
+- `super.init`으로 SuperClass의 초기화값을 바꿀 수 있다.
+
+```swift
+// Super Class
+class NamedShape {
+    var numberOfSides: Int = 0
+    var name: String
+
+    init(name: String) {
+       self.name = name
+    }
+
+    func simpleDescription() -> String {
+       return "A shape with \(numberOfSides) sides."
+    }
+
+    func getName() -> String {
+        return "my name is \(name)"
+    }
+}
+
+// Sub Class
+class Square: NamedShape {
+    var sideLength: Double
+
+    init(sideLength: Double, name: String) {
+        self.sideLength = sideLength
+        super.init(name: name)
+    }
+
+    func numberOfSidesToFour()->Void {
+        super.numberOfSides = 4
+    }
+
+    func getNumberOfSidesOfSuperClass() -> Int {
+        return super.numberOfSides
+    }
+
+    func area() -> Double {
+        return sideLength * sideLength
+    }
+
+    override func simpleDescription() -> String {
+        return "A square with sides of length \(sideLength)."
+    }
+}
+let test = Square(sideLength: 5.2, name: "taejoon")
+test.area()
+test.simpleDescription() // A square ..
+test.getName() // my name is taejoon
+test.numberOfSidesToFour()
+test.getNumberOfSidesOfSuperClass()
+```
+
+getter와 setter를 아래와 같이 간편하게 설정할 수 있다.
+
+```swift
+class Calculator {
+    var result: Int = 0
+
+    var calculatorDescription: String {
+        get {
+            return "Calculator result: \(result)"
+        }
+        set {
+            result = Int(newValue) ?? 0
+        }
+    }
+}
+
+
+let calc = Calculator()
+calc.calculatorDescription = "100"
+
+calc.calculatorDescription // Calculator result: 100
+
+```
