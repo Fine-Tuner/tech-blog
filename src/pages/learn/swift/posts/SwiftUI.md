@@ -6,9 +6,6 @@ description: "SwiftUI를 학습해보자."
 tags: ["SwiftUI"]
 ---
 
-> **Swift를 공부하는 이유**  
-> 한 분야에서 잘하는 것도 중요하지만 분야에 제한없이 만들고 싶은 것을 만들 수 있어야 된다고 생각하던 중 지인의 연락을 받고 함께 LLM을 활용하여 Obsidian + GoodNote의 장점을 섞은 서비스를 만들어보기로 했다.
-
 > - [참고한 공식문서 튜토리얼](https://developer.apple.com/tutorials/swiftui-concepts/exploring-the-structure-of-a-swiftui-app)
 > - [참고한 강의](https://www.youtube.com/watch?v=N-ntKJdVNBs&list=PLwvDm4VfkdphqETTBf-DdjCoAvhai1QpO&index=2)
 

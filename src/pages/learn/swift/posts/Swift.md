@@ -6,7 +6,7 @@ description: "Swift를 학습해보자."
 tags: ["Swift"]
 ---
 
-단축 정리
+Swift 공식문서 및 유튜브로 얻은 지식 요약 정리
 
 ## basic
 
@@ -352,6 +352,30 @@ struct NetworkManager {
     mutating func disconnect() {
         isConnected = false
         print("Disconnected from the network")
+    }
+}
+```
+
+mutating에 부연 설명 : 값 타입인 struct에서만 mutating이 필요하다. 만약 get만 하려는 경우 mutating을 붙일 필요가 없다.
+
+```swift
+// 구조체 (값 타입) - mutating 필요
+struct Point {
+    var x: Int
+    var y: Int
+
+    mutating func moveRight() {
+        x += 1
+    }
+}
+
+// 클래스 (참조 타입) - mutating 불필요
+class PointClass {
+    var x: Int
+    var y: Int
+
+    func moveRight() {  // mutating 키워드 불필요
+        x += 1
     }
 }
 ```
@@ -869,4 +893,566 @@ calc.calculatorDescription = "100"
 
 calc.calculatorDescription // Calculator result: 100
 
+```
+
+옵저버 패턴도 구현이 가능하다.
+
+willSet은 프로퍼티가 변경되기 직전, didSet은 프로퍼티가 변경된 직후다.
+
+각각 새로 변경 될 `newValue`와 이전 값인 `oldValue`가 사용된다.
+
+```swift
+class BankAccount {
+    var accountHolder: String
+    var balance: Int {
+        willSet {  // 잔액이 변경되기 직전에 실행
+            print("[\(accountHolder)님의 잔액 변경 예정]")
+            print("현재 잔액: \(balance)원")
+            print("변경될 잔액: \(newValue)원")
+        }
+
+        didSet {   // 잔액이 변경된 직후에 실행
+            print("[\(accountHolder)님의 잔액 변경 완료]")
+            print("이전 잔액: \(oldValue)원")
+            print("현재 잔액: \(balance)원")
+            print("====================")
+        }
+    }
+
+    init(accountHolder: String, balance: Int) {
+        self.accountHolder = accountHolder
+        self.balance = balance
+    }
+}
+
+// 사용 예시
+let account = BankAccount(accountHolder: "김철수", balance: 10000)
+
+// 입금
+account.balance += 5000
+
+// 출금
+account.balance -= 3000
+```
+
+## enum
+
+- 전체 이름 사용 (Suit.hearts)
+  타입이 명시되지 않은 경우 사용
+  컴파일러가 타입을 추론할 수 없을 때 사용
+
+- 축약형 사용 (.hearts)
+  이미 타입이 알려진 경우 사용 가능
+  switch 문 안에서처럼 컨텍스트가 명확할 때 사용
+
+```swift
+enum numberEnum: Int {
+    case one = 1
+    case two = 2
+}
+
+print(numberEnum.one) // "one"
+print(numberEnum.one.rawValue) // 1
+
+```
+
+```swift
+enum Suit {
+    case spades, hearts, diamonds, clubs
+
+
+    func simpleDescription() -> String {
+        switch self {
+        case .spades:
+            return "spades"
+        case .hearts:
+            return "hearts"
+        case .diamonds:
+            return "diamonds"
+        case .clubs:
+            return "clubs"
+        }
+    }
+}
+let hearts = Suit.hearts
+let heartsDescription = hearts.simpleDescription()
+print(heartsDescription) // "hearts"
+
+```
+
+실용적인 예제
+
+```swift
+enum HTTPStatus: Int {
+    case ok = 200
+    case notFound = 404
+    case serverError = 500
+
+    var description: String {
+        switch self {
+        case .ok: return "성공 (\(self.rawValue))"
+        case .notFound: return "찾을 수 없음 (\(self.rawValue))"
+        case .serverError: return "서버 에러 (\(self.rawValue))"
+        }
+    }
+}
+
+let status = HTTPStatus.ok
+print(status)           // "ok" 출력
+print(status.rawValue)  // 200 출력
+print(status.description) // "성공 (200)" 출력
+```
+
+## enum - Raw Value vs Associated value
+
+```swift
+// Raw Value 예시 (항상 같은 값)
+enum Direction: String {
+    case north = "북"  // 항상 "북"
+    case south = "남"  // 항상 "남"
+}
+
+// Associated Value 예시 (상황에 따라 다른 값)
+enum DeliveryStatus {
+    case preparing(estimatedTime: Int)
+    case shipping(trackingNumber: String)
+    case delivered(deliveryTime: String)
+}
+
+let order1 = DeliveryStatus.preparing(estimatedTime: 30)
+let order2 = DeliveryStatus.preparing(estimatedTime: 45)
+// 같은 preparing 케이스지만 다른 estimatedTime 값
+```
+
+## enum - Associated value swith
+
+```swift
+switch success {
+case let .result(sunrise, sunset):    // 여기서 값 추출이 일어납니다
+    print("Sunrise is at \(sunrise) and sunset is at \(sunset).")
+case let .failure(message):
+    print("Failure...  \(message)")
+}
+```
+
+## aysnc / await
+
+- async를 함수의 이름 뒤에 붙인다.
+- await를 비동기 함수 앞에 붙인다.
+
+```swift
+func fetchUsername(from server: String) async -> String {
+    let userID = await fetchUserID(from: server)
+    if userID == 501 {
+        return "John Appleseed"
+    }
+    return "Guest"
+}
+```
+
+만약 동시에 비동기 요청을 하고 싶다면 각 async를 앞에 붙이면 된다.
+
+```swift
+func connectUser(to server: String) async {
+    async let userID = fetchUserID(from: server)
+    async let username = fetchUsername(from: server)
+    let greeting = await "Hello \(username), user ID \(userID)"
+    print(greeting)
+}
+```
+
+## Task
+
+- Task를 사용해서 비동기 작업을 관리할 수 있다.
+- 취소도 가능하다.
+- 우선순위 설정도 가능하다.
+
+```swift
+let task = Task(priority: .high) {
+    await longRunningOperation()
+}
+// 나중에 필요하면 취소 가능
+task.cancel()
+```
+
+```swift
+class NetworkManager {
+    func fetchData() {
+        Task {
+            do {
+                let data = try await networkRequest()
+                print("데이터 수신: \(data)")
+            } catch {
+                print("에러 발생: \(error)")
+            }
+        }
+    }
+}
+```
+
+여러 작업을 동시에 수행할 수 있다.
+
+```swift
+Task {
+    async let result1 = fetchData()
+    async let result2 = fetchMoreData()
+
+    let finalResult = await (result1, result2)
+    print("모든 데이터 수신: \(finalResult)")
+}
+```
+
+## Task Group
+
+Task Group을 생성하는 방법에는 두 가지가 있다.
+
+- `of: Int.self` : 각 작업이 반환할 값의 타입이 Int라고 지정.
+- `group` : TaskGroup의 인스턴스를 참조하는 파라미터
+
+```swift
+// 1. withTaskGroup
+let userIDs = await withTaskGroup(of: Int.self) { group in
+    for server in ["primary", "secondary", "development"] {
+        group.addTask {
+            return await fetchUserID(from: server)
+        }
+        // addTask가 여러개 있다고 가정했을 때 비동기로 동작하고, 끝나는 순서대로 group인스턴스에 추가된다.
+    }
+
+
+    var results: [Int] = []
+    for await result in group { // 위에 group.addTask가 끝날 때까지 가디리지 않고, 하나씩 끝날 때마다 append된다. 즉, 순서를 보장하지 않는다.
+        results.append(result)
+    }
+    return results
+}
+
+// 2. withThrowingTaskGroup (에러를 던질 수 있는 버전)
+try await withThrowingTaskGroup(of: Int.self) { group in
+    // ...
+}
+```
+
+## actor
+
+actor의 실생활 예시
+
+```swift
+actor ServerConnection {
+    // 1. 속성 선언
+    var server: String = "primary"        // 일반 속성
+    private var activeUsers: [Int] = []   // 비공개 속성
+
+    // 2. 비동기 메서드
+    func connect() async -> Int {
+        // await: 비동기 함수 호출
+        let userID = await fetchUserID(from: server)
+
+        // activeUsers 배열 수정 (자동으로 안전하게 처리됨)
+        activeUsers.append(userID)
+
+        return userID
+    }
+}
+```
+
+```swift
+// 1. 기본 사용
+let connection = ServerConnection()
+
+// Actor의 메서드 호출은 반드시 await 사용
+let userID = await connection.connect()
+
+// 2. 여러 작업 동시 실행
+let connection = ServerConnection()
+
+// 동시에 여러 요청을 안전하게 처리
+async let user1 = connection.connect()
+async let user2 = connection.connect()
+async let user3 = connection.connect()
+
+let users = await [user1, user2, user3]
+```
+
+### 왜 active를 사용해야 할까?
+
+만약 actor로 만들었을 경우에는 한번씩만 접근이 가능하기 때문에 coffeeBeans가 0개 미만이 될 수 없다.
+
+- 예상치 못한 결과를 막는다.
+- 동시성 문제로 인한 버그를 막는다.
+
+```swift
+actor CoffeeShop {
+    var coffeeBeans = 1000
+
+    func makeCoffee() {
+        if coffeeBeans >= 20 {
+            coffeeBeans -= 20
+            print("커피 완성!")
+        }
+    }
+}
+
+let shop = CoffeeShop()
+
+Task {
+    await shop.makeCoffee()
+}
+```
+
+## protocol
+
+프로토콜은 설계도 같은 역할을 한다.
+
+> 규모가 커질수록 서로간의 약속이 중요해진다.
+
+```swift
+// 프로토콜 정의
+protocol Animal {
+    // 필수 구현 항목
+    var name: String { get }
+    var species: String { get }
+
+    // 선언만 되어있는 필수 메서드
+    func makeSound()
+}
+
+// 프로토콜 익스텐션으로 기본 구현 제공
+extension Animal {
+    // 선택적 구현 항목 (기본 구현 제공)
+    func sleep() {
+        print("\(name)이(가) 잠을 잡니다.")
+    }
+
+    func eat() {
+        print("\(name)이(가) 먹이를 먹습니다.")
+    }
+}
+
+// 구현 예시
+class Dog: Animal {
+    var name: String        // 필수
+    var species: String     // 필수
+
+    init(name: String) {
+        self.name = name
+        self.species = "개"
+    }
+
+    func makeSound() {      // 필수
+        print("멍멍!")
+    }
+
+    // sleep()과 eat()은 구현하지 않아도 됨 (기본 구현 사용)
+}
+```
+
+## Error Handling
+
+```swift
+enum PrinterError: Error {
+    case outOfPaper
+    case noToner
+    case onFire
+}
+
+func send(job: Int, toPrinter printerName: String) throws -> String {
+    if printerName == "Never Has Toner" {
+        throw PrinterError.noToner
+    }
+    return "Job sent"
+}
+
+do {
+    let printerResponse = try send(job: 1040, toPrinter: "Never Has Toner")
+    print(printerResponse)
+} catch {
+    print("error is \(error)")
+}
+// Prints "error is noToner"
+
+```
+
+에러 케이스별로 다르게 처리할 수도 있다.
+
+```swift
+do {
+    let printerResponse = try send(job: 1440, toPrinter: "Gutenberg")
+    print(printerResponse)
+} catch PrinterError.onFire {
+    print("I'll just put this over here, with the rest of the fire.")
+} catch let printerError as PrinterError {
+    print("Printer error: \(printerError).")
+} catch {
+    print(error)
+}
+// Prints "Job sent"
+```
+
+에러처리는 다양하게 할 수 있다.
+
+- try? 사용
+  - 장점: 간단한 처리 가능, nil 체크로 충분한 경우
+  - 단점: 구체적인 에러 정보 손실
+- do-catch 사용
+  - 장점: 상세한 에러 처리 가능
+  - 단점: 코드가 길어질 수 있음
+- throws로 전파
+  - 장점: 에러 처리를 상위 레벨로 위임 가능
+  - 단점: 어디선가는 반드시 처리해야 함
+
+아래는 네트워킹 예시다.
+
+```swift
+class NetworkManager {
+    // 에러를 던질 수 있는 함수
+    func fetchUser(id: Int) async throws -> User {
+        guard let url = URL(string: "https://api.example.com/users/\(id)") else {
+            throw NetworkError.invalidURL
+        }
+
+        let (data, _) = try await URLSession.shared.data(from: url)
+
+        guard let user = try? JSONDecoder().decode(User.self, from: data) else {
+            throw NetworkError.decodingError
+        }
+
+        return user
+    }
+}
+
+// 1. try? 사용 (간단하지만 에러 세부정보 없음)
+func fetchUserProfile1(id: Int) async {
+    let user = try? await NetworkManager().fetchUser(id: id)
+    if let user = user {
+        print("사용자: \(user)")
+    } else {
+        print("사용자 정보 가져오기 실패")
+    }
+}
+
+// 2. do-catch 사용 (자세한 에러 처리 가능)
+func fetchUserProfile2(id: Int) async {
+    do {
+        let user = try await NetworkManager().fetchUser(id: id)
+        print("사용자: \(user)")
+    } catch NetworkError.invalidURL {
+        print("잘못된 URL")
+    } catch NetworkError.noData {
+        print("데이터 없음")
+    } catch NetworkError.decodingError {
+        print("디코딩 실패")
+    } catch {
+        print("기타 에러: \(error)")
+    }
+}
+
+// 3. 에러 전파 (호출한 곳에서 처리)
+func fetchUserProfile3(id: Int) async throws -> User {
+    return try await NetworkManager().fetchUser(id: id)
+}
+```
+
+아래는 로그인 예시다.
+
+```swift
+// 중요한 작업: 상세한 에러 처리 필요
+func login(username: String, password: String) async {
+    do {
+        let user = try await authenticateUser(username: password)
+        try await saveUserSession(user)
+        navigateToHome()
+    } catch AuthError.invalidCredentials {
+        showAlert("아이디 또는 비밀번호가 잘못되었습니다.")
+    } catch AuthError.serverError {
+        showAlert("서버 오류가 발생했습니다.")
+    } catch {
+        showAlert("알 수 없는 오류가 발생했습니다.")
+    }
+}
+
+// 덜 중요한 작업: 간단한 처리로 충분
+func loadUserPreferences() async {
+    let preferences = try? await fetchUserPreferences()
+    if let prefs = preferences {
+        applyPreferences(prefs)
+    } else {
+        // 기본값 사용
+        applyDefaultPreferences()
+    }
+}
+```
+
+## try?
+
+에러가 발생하더라도 에러 처리가 필요없이 괜찮은 상황일 때 사용한다.
+
+```swift
+// 1. 캐시된 데이터와 함께 사용
+func getCachedOrFetchData() async -> Data? {
+    if let cached = cache.getData() {
+        return cached
+    }
+
+    // 네트워크 요청 실패해도 괜찮은 상황
+    return try? await fetchDataFromNetwork()
+}
+
+// 2. 여러 소스에서 데이터 가져오기
+func getDataFromMultipleSources() -> Data? {
+    // 첫 번째 소스가 실패하면 두 번째 시도
+    return (try? getDataFromSource1()) ?? (try? getDataFromSource2())
+}
+
+// 3. 초기화에서의 활용
+struct Configuration {
+    let  Data?
+
+    init() {
+        // 설정 파일 읽기 실패해도 앱은 계속 실행
+        self.data = try? loadConfigFile()
+    }
+}
+```
+
+## defer
+
+defer를 사용해서 함수가 종료되기 직전에 동작할 로직을 명시할 수 있다.
+
+```swift
+class UserInterface {
+    var isLoading = false
+
+    func fetchData() async {
+        isLoading = true
+
+        defer {
+            isLoading = false
+            updateUI()
+        }
+
+        // 데이터 가져오기...
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
+    }
+}
+```
+
+## Generic
+
+```swift
+class Storage<T> {
+    private var items: [String: T] = [:]
+
+    func save(_ item: T, forKey key: String) {
+        items[key] = item
+    }
+
+    func get(forKey key: String) -> T? {
+        return items[key]
+    }
+}
+
+// 사용 예시
+let userStorage = Storage<User>()
+let settingsStorage = Storage<Settings>()
 ```
