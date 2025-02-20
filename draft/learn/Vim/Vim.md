@@ -35,8 +35,7 @@ tags: ["vim"]
 - 저장하고 나갈 때는 `ECS` > `:wq` > `Enter`
 
 - 삭제 명령은 `d`로 시작한다.
-
-  - `dw`: 다음 단어 전까지 공백포함하여 삭제
+- - `dw`: 다음 단어 전까지 공백포함하여 삭제
   - `d2w`: 다음 두 단어를 지운다.
   - `de`: 다음 단어 전까지 공백제외하고 삭제
   - `d$`: 현재 위치부터 행의 끝까지 다 지운다.
@@ -102,3 +101,18 @@ tags: ["vim"]
 LazyVim을 설치했을 때 기본적으로 구성되어있는 단축키를 알아보자.
 
 - Space : 명령어들을 보여준다.
+
+## 내가 주로 사용하는 방법 기록해두기
+
+- 화면상에 위치 손쉽게 옮기기 : s로 검색모드 시작 -> 원하는 단어 입력 -> 단축키로 이동
+- 파일 탐색 : Space 2번
+- 문자열 전체 파일에서 검색 : Space + sg(search Global)
+- 현재 열려있는 파일 한번에 보기 : Space + ,
+- 커멘트 히스토리(설정 기록 보기) : Space + :
+- neovim config 파일 수정 : Space + fc
+- 최근 열린 파일 : Space + fr
+- 깃 로그 보기 : Space + fc
+- 깃 status : Space + gs
+- 깃 stach : Space + gS
+- Color Scheme : Space + uC
+- 터미널 보기 : Space + ft
