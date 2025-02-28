@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import NavHeader from "../../../components/posts/NavHeader.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+import PostList from "../../../components/posts/PostList.astro";
+
+const allPosts = await Astro.glob("./posts/*.md");
+---
+
+<BaseLayout>
+  <NavHeader />
+  <MainLayout title="Book" description="개발 지식">
+    <PostList allPosts={allPosts} />
+  </MainLayout>
+</BaseLayout>
