@@ -31,6 +31,21 @@ const techStacks = [
     path: "/learn/react",
     icon: `<img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React Logo" height="32" />`,
   },
+  {
+    title: "Book",
+    description: "모든 개발 지식",
+    path: "/learn/book",
+    icon: `<svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <rect width="100" height="100" fill="url(#pattern0_279_3)"/>
+    <defs>
+    <pattern id="pattern0_279_3" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlink:href="#image0_279_3" transform="scale(0.01)"/>
+    </pattern>
+    <image id="image0_279_3" width="100" height="100" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD8ElEQVR4nO2cTYhVZRjHjx/pyiwIxBZZuTAoyHAjFKgwet5nxo/VbNtUtppAQc/z3BEu1CpbREShi6igMFrULpduioLudJ7nOCEYUUSF2i7DjzRvPMdxuIx9jNc79zyj/x8cuHNnmPN73///Ofeu3iwDAAAAAAAAAAAAAAAAAAAAAAAAQGOMFJ3VJNV2EjuYxD5KrF+T6HdJ7Ddiu0Ks5xPbz0m0IrZjiauCpHy63e4uHbTL+PjHy1Khz/g9ahfRyu/tDu5SO7mbO7Idc+ecq5HU/urebDEzxtX9iau9Sex4Yr1MYt0+rrPE9nZ+sHz8tn1EnyC2I8R2rh8XX0Ni/YwKe35Pu7wvWyzkRfkwib1RN66/ELo3X3rNN2NHcfLJW/UZbZUbvRT+Pwblk0R/J9HXRyen1mVR8ZEm1sO3MQ3d/98Iu+oTs/vAqVXz8hE9mlj/WigfEr2UWF8N9zjLW5oT268Lt3Cb29DvU6FP/ZvPGFebSOyHYfmQ2C/+GZk1T3dJYn1lkI8Dmu/lXwRaumuuUc62m8T+GLqPP1bFXvY9aSSKTXs795Doe8NfuPVMil2llj57w8lf1+816ESs7/reDD0QYnun0YXLTCisZ2ad/FtZACffmwYC0YuNL1yuXz2BdEOUROzC8AMJsHAKGkivEwKR5sNAIDM0HQICETyyZonYRgrggkeWIJCwbaQALpgQQSBh20gBXDAhgkDCtpECuGBCBIGEbSMFcMGECAIJ20YK4IIJEQQSto0UwAUTIggkbBspgAsmRBBI2DZSABdMiCCQsG2kAC6YEEEgYdtIAVwwIYJAwraRArhgQgSBhG0jBXDBhAgCCdtGCuCCCREEEraNFMAFEyIIJGwbKYALJkQQSNg2UgAXTIggkLBtpAAumBBBIGHbSAFcMCGCQMK2kQK4YEIEgYRtIwVwWSQToteI7VsSfcsPxsyLcuv2SX3ED8rc0j6xPE2cXlkfmjl5cr3/zg+a9L8l1qn5HNF3a05+4qi9n0v5YpJqyxhXj9b3nji90l38tbu5h/+NHyl43f1OCIT1yyQ6kbc6a/u9z879nQdI7IXE+kW/gSS2z5Poc7ukWtOvx8iBqQdz1pd8TYsqkJlGf5JatnnQ99wh1WP15Ij92RP6+VmnnpNQ62NdRd/MD9mGQXv42hLrp/81vdmwufmcRf9ZP1iIDZiLP2bq4wVZf0pi+268768T249+zJ4/drIFxguSWD/8p73Ihg2JfdPT0lOjUm7L7lJGpdzmezA7naKd4UtMTq0jsdf8M2K8Pb0iu8sZb0+v8L3wPdlZTD/UtA8AAAAAAAAAAAAAAAAAAAAAAACQ3WH8DWCxPMd17PqqAAAAAElFTkSuQmCC"/>
+    </defs>
+    </svg>
+    `,
+  },
 ];
 ---
 
@@ -152,7 +167,13 @@ const techStacks = [
   .glow {
     position: absolute;
     inset: -1px;
-    background: linear-gradient(90deg, var(--theme-accent), transparent 20%, transparent 80%, var(--theme-accent));
+    background: linear-gradient(
+      90deg,
+      var(--theme-accent),
+      transparent 20%,
+      transparent 80%,
+      var(--theme-accent)
+    );
     opacity: 0;
     transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
