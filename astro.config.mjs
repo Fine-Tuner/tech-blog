@@ -10,17 +10,13 @@ const prettyCodeOptions = {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "http://taejoon.me",
+  site: "https://taejoon.me",
   integrations: [
     react({
       experimentalReactChildren: true,
       include: ["**/react/*"],
     }),
-    sitemap((page) => {
-      const excludePatterns = [/\/draft\//];
-
-      return !excludePatterns.some((pattern) => pattern.test(page.url));
-    }),
+    sitemap(),
   ],
   markdown: {
     syntaxHighlight: false,
