@@ -7,7 +7,7 @@ import PostList from "../../../components/posts/PostList.astro";
 const allPosts = await Astro.glob("./posts/*.md");
 ---
 
-<BaseLayout>
+<BaseLayout pageTitle="Swift/SwiftUI">
   <NavHeader />
   <MainLayout title="Swift/SwiftUI" description="Apple의 모던한 UI 프레임워크">
     <PostList allPosts={allPosts} />
