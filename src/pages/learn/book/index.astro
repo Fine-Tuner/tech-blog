@@ -7,7 +7,7 @@ import PostList from "../../../components/posts/PostList.astro";
 const allPosts = await Astro.glob("./posts/*.md");
 ---
 
-<BaseLayout>
+<BaseLayout pageTitle="책">
   <NavHeader />
   <MainLayout title="Book" description="개발 지식">
     <PostList allPosts={allPosts} />

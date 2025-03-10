@@ -7,7 +7,7 @@ import PostList from "../../../components/posts/PostList.astro";
 const allPosts = await Astro.glob("./posts/*.md");
 ---
 
-<BaseLayout>
+<BaseLayout pageTitle="Next.js">
   <NavHeader />
   <MainLayout title="Next.js" description="React 기반의 풀스택 웹 프레임워크">
     <PostList allPosts={allPosts} />
