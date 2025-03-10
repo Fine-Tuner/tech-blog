@@ -1,19 +1,26 @@
 {
   "name": "Taejoon's Tech Blog",
   "short_name": "TJ Blog",
+  "description": "태준의 기술 블로그입니다. 개발 경험과 지식을 공유합니다.",
+  "start_url": "/",
   "icons": [
     {
       "src": "/images/android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/images/android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "theme_color": "#1E293B",
   "background_color": "#1E293B",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["technology", "blog", "development"],
+  "lang": "ko-KR"
 }
