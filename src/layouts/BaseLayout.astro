@@ -143,6 +143,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       })}
     />
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D3VJFYM52Z"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-D3VJFYM52Z");
+    </script>
+
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
