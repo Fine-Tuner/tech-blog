@@ -1,5 +1,5 @@
 import react from "@astrojs/react";
-import { defineConfig, squooshImageService } from "astro/config";
+import { defineConfig, sharpImageService } from "astro/config";
 import rehypePrettyCode from "rehype-pretty-code";
 
 import sitemap from "@astrojs/sitemap";
@@ -23,6 +23,7 @@ export default defineConfig({
     rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
   },
   image: {
-    service: squooshImageService(),
+    service: sharpImageService(),
+    remotePatterns: [{ protocol: "https" }],
   },
 });
