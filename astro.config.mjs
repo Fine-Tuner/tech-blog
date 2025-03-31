@@ -22,8 +22,8 @@ export default defineConfig({
     syntaxHighlight: false,
     rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
   },
-  image: {
-    service: { entrypoint: 'astro/assets/services/sharp' },
-    fallbackService: 'passthrough',
-  },
+  // image: {
+  //   service: squooshImageService(),
+
+  // },
 });
