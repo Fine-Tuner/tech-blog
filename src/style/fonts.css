@@ -1,3 +1,6 @@
+/* CDN 폰트를 사용하므로 로컬 폰트 정의 제거 */
+/* AritaBuri 폰트는 이제 CDN에서 로드됨 */
+
 @font-face {
   font-family: "Pretendard Variable";
   font-weight: normal;
@@ -6,6 +9,7 @@
   src: url("/fonts/PretendardVariable.woff2") format("woff2-variations");
 }
 
+/* 기존 AritaBuri 로컬 폰트 정의 제거
 @font-face {
   font-family: "AritaBuri";
   src: url("/fonts/AritaBuri/AritaBuriKR-Medium.woff2") format("woff2");
@@ -13,6 +17,9 @@
   font-style: normal;
   font-display: swap;
 }
+*/
+
+/* 주석 처리된 폰트들은 그대로 유지 */
 /* @font-face {
   font-family: 'AritaBuri';
   src: url('/fonts/AritaBuri/AritaBuriKR-Bold.woff2') format('woff2');

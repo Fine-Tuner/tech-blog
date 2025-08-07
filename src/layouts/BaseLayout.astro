@@ -28,6 +28,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- DNS 예비 연결 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+
+    <!-- Critical font CSS preload -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/taevel02/typeface-arita/arita.min.css"
+    />
+
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" /> -->
 
     <!-- Favicon -->
@@ -167,34 +177,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <style></style>
     <ViewTransitions />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link
+
+    <!-- Remove local font preloads as we're now using CDN -->
+    <!-- <link
       rel="preload"
       href="/fonts/AritaBuri/AritaBuriKR-Medium.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
-    />
-    <!-- <link
-      rel="preload"
-      href="/fonts/AritaBuri/AritaBuriKR-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/AritaDotum/AritaDotumKR-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/AritaDotum/AritaDotumKR-Medium.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
     /> -->
+
     <script is:inline>
       const theme = localStorage.getItem("theme");
 
