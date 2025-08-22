@@ -49,7 +49,16 @@ body {
   color: var(--text-color);
   background-color: var(--bg-color);
 
-  font-family: "AritaBuri", "Pretendard", Arial, Helvetica, sans-serif;
+  /* 최적화된 폰트 스택 - AritaBuri는 CDN CSS에서 정의됨 */
+  font-family:
+    "Arita Buri",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Apple SD Gothic Neo",
+    "Pretendard Variable",
+    "Pretendard",
+    system-ui,
+    sans-serif;
 }
 
 main {
