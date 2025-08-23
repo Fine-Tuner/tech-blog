@@ -8,6 +8,7 @@ export default function ScrollContainer({ children }: Props) {
   return (
     <Scrollbars
       autoHeightMin={"100vh"}
+      renderView={(props) => <div {...props} data-scroll-root="true" />}
       renderThumbVertical={({ style }) => (
         <div
           style={{

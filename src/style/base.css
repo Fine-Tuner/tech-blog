@@ -61,6 +61,9 @@ body {
     sans-serif;
 }
 
+/* Post TOC */
+/* 전역 스타일 제거됨: 모듈 CSS로 이동 */
+
 main {
   width: var(--content-width);
   max-width: 90%;

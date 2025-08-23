@@ -7,6 +7,7 @@ import NavHeader from "../components/posts/NavHeader.astro";
 import Blur from "../components/Blur.astro";
 import { Comment } from "../components/Comment";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import TOC from "../components/TOC";
 
 interface Props {
   frontmatter: {
@@ -28,6 +29,7 @@ const day = frontmatter.pubDate.toString().slice(8, 10);
   <NavHeader />
   <MainLayout title={frontmatter.title} description={`${year}.${month}.${day}`}>
     <PostLayout>
+      <TOC client:load />
       <slot />
       <Comment client:load />
     </PostLayout>

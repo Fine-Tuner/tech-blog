@@ -1,0 +1,130 @@
+.toc {
+  position: fixed;
+  top: 50%;
+  right: max(24px, calc((100vw - var(--content-width)) / 2 - 300px));
+  left: auto;
+  width: 220px;
+  max-height: calc(100vh - 200px);
+  overflow: hidden;
+  padding: 12px 12px 8px;
+  border-radius: 8px;
+  background: var(--contrast-bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--hover-background-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  z-index: 2;
+  transform: translateY(-50%);
+}
+
+.hidden {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(calc(-50% - 8px));
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--heading-color);
+}
+
+.toggleBtn {
+  appearance: none;
+  border: 1px solid var(--hover-background-color);
+  background: transparent;
+  color: var(--text-color);
+  border-radius: 6px;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.toggleBtn:hover {
+  background: var(--hover-background-color);
+}
+
+.content {
+  overflow: auto;
+  max-height: calc(100vh - 240px);
+  transition: max-height 0.2s ease;
+}
+
+.collapsed .content {
+  max-height: 0;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  font-size: 0.75rem;
+}
+
+.item {
+  line-height: 1.5;
+  margin: 0;
+  margin-top: 10px;
+}
+
+.link {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--hover-color);
+  /* text-decoration: underline; */
+  /* text-underline-offset: 2px; */
+  text-decoration-thickness: 1px;
+  /* subtle glow */
+  filter: drop-shadow(0 0 0.25rem rgba(255, 255, 255, 0.35));
+}
+
+.indent3 {
+  padding-left: 16px;
+  line-height: 1.4;
+  margin-top: 4px;
+  position: relative;
+}
+.indent3::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.9em;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 2px;
+  background: var(--text-color);
+  border-radius: 0; /* square */
+  opacity: 0.85;
+}
+.indent3:hover::before {
+  background: var(--hover-color);
+  filter: drop-shadow(0 0 0.25rem rgba(255, 255, 255, 0.35));
+}
+.indent4 {
+  padding-left: 18px;
+}
+.indent5 {
+  padding-left: 24px;
+}
+.indent6 {
+  padding-left: 30px;
+}
+
+@media (max-width: 1120px) {
+  .toc {
+    display: none;
+  }
+}
