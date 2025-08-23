@@ -1,0 +1,75 @@
+---
+
+---
+
+<script is:inline>
+  // giscus 다크모드 동기화: 문서의 dark 클래스와 연동하여 iframe 테마를 변경
+  const getTheme = () =>
+    document.documentElement.classList.contains("dark") ? "dark" : "light";
+
+  const setGiscusTheme = (theme) => {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme } } },
+      "https://giscus.app",
+    );
+  };
+
+  const applyTheme = () => setGiscusTheme(getTheme());
+
+  // giscus iframe 삽입 시점 감지 후 테마 적용
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      for (const n of m.addedNodes) {
+        if (
+          n.nodeType === 1 &&
+          n.tagName === "IFRAME" &&
+          n.classList.contains("giscus-frame")
+        ) {
+          setTimeout(applyTheme, 50);
+        }
+      }
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // 초기 적용
+  if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+  ) {
+    setTimeout(applyTheme, 200);
+  } else {
+    window.addEventListener("DOMContentLoaded", () =>
+      setTimeout(applyTheme, 200),
+    );
+  }
+
+  // 테마 토글 버튼 클릭 시 동기화
+  const btn = document.getElementById("themeChangeBtn");
+  btn?.addEventListener("click", () => setTimeout(applyTheme, 0));
+
+  // 다른 탭/창에서 로컬스토리지 변경 시 동기화
+  window.addEventListener("storage", (e) => {
+    if (e.key === "theme") setTimeout(applyTheme, 0);
+  });
+</script>
+
+<section aria-label="댓글">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="Fine-Tuner/tech-blog"
+    data-repo-id="R_kgDONfwMaA"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONfwMaM4Cugd9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async></script>
+</section>

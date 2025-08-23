@@ -5,6 +5,7 @@ import PostLayout from "./PostLayout.astro";
 import "./markdownPostLayout.module.css";
 import NavHeader from "../components/posts/NavHeader.astro";
 import Blur from "../components/Blur.astro";
+import Giscus from "../components/Giscus.astro";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
 interface Props {
@@ -28,6 +29,7 @@ const day = frontmatter.pubDate.toString().slice(8, 10);
   <MainLayout title={frontmatter.title} description={`${year}.${month}.${day}`}>
     <PostLayout>
       <slot />
+      <Giscus />
     </PostLayout>
   </MainLayout>
 </BaseLayout>
