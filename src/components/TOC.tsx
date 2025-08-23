@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./toc.module.css";
 
 type HeadingItem = {
@@ -91,7 +91,7 @@ function useShowAfterScroll(
 
 function useActiveHeading(
   headings: HeadingItem[],
-  offset = 120,
+  offset?: number,
 ): string | null {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -99,31 +99,57 @@ function useActiveHeading(
     if (!headings.length) return;
 
     const computeActive = () => {
-      const candidates = headings
-        .map((h) => {
-          const el = document.getElementById(h.id);
-          if (!el) return { id: h.id, top: Number.POSITIVE_INFINITY };
-          const top = el.getBoundingClientRect().top;
-          return { id: h.id, top };
-        })
-        .filter((x) => x.top - offset <= 0)
-        .sort((a, b) => b.top - a.top);
+      const refY =
+        typeof offset === "number"
+          ? offset
+          : Math.round(window.innerHeight / 2);
+      const positions = headings.map((h) => {
+        const el = document.getElementById(h.id);
+        if (!el)
+          return {
+            id: h.id,
+            top: Number.POSITIVE_INFINITY,
+            delta: Number.POSITIVE_INFINITY,
+          };
+        const top = el.getBoundingClientRect().top;
+        const delta = top - refY;
+        return { id: h.id, top, delta };
+      });
 
-      if (candidates.length > 0) {
-        setActiveId(candidates[0].id);
+      const above = positions.filter((p) => p.delta <= 0);
+      const below = positions.filter((p) => p.delta > 0);
+
+      if (above.length > 0) {
+        // 가장 참조선(refY)에 가까운 위쪽 헤딩
+        const pick = above.reduce((acc, cur) =>
+          cur.delta > acc.delta ? cur : acc,
+        );
+        setActiveId(pick.id);
         return;
       }
 
-      setActiveId(headings[0]?.id ?? null);
+      if (below.length > 0) {
+        // 아직 첫 헤딩 전에 있는 경우: 가장 가까운 아래 헤딩
+        const pick = below.reduce((acc, cur) =>
+          cur.delta < acc.delta ? cur : acc,
+        );
+        setActiveId(pick.id);
+        return;
+      }
+
+      setActiveId(headings[headings.length - 1]?.id ?? null);
     };
 
     const onWinScroll = () => computeActive();
+    const onResize = () => computeActive();
     window.addEventListener("scroll", onWinScroll, { passive: true });
+    window.addEventListener("resize", onResize);
     const interval = window.setInterval(computeActive, 200);
     computeActive();
 
     return () => {
       window.removeEventListener("scroll", onWinScroll);
+      window.removeEventListener("resize", onResize);
       window.clearInterval(interval);
     };
   }, [headings, offset]);
@@ -135,9 +161,28 @@ export default function TOC({ title }: { title?: string }) {
   const article = useArticle();
   const headings = useHeadingsFromArticle(article);
   const show = useShowAfterScroll(article, 200);
-  const activeId = useActiveHeading(headings, 120);
+  const activeId = useActiveHeading(headings);
+
+  const listRef = useRef<HTMLDivElement | null>(null);
 
   const items = useMemo(() => headings, [headings]);
+
+  useEffect(() => {
+    if (!activeId) return;
+    const container = listRef.current || document.getElementById("toc-content");
+    if (!container) return;
+    const safeId = (window as any).CSS?.escape
+      ? (window as any).CSS.escape(activeId)
+      : activeId;
+    const link = container.querySelector(
+      `a[href="#${safeId}"]`,
+    ) as HTMLElement | null;
+    link?.scrollIntoView({
+      block: "nearest",
+      inline: "nearest",
+      behavior: "smooth",
+    });
+  }, [activeId]);
 
   const scrollWithOffset = useCallback((id: string) => {
     const el = document.getElementById(id);
@@ -168,7 +213,7 @@ export default function TOC({ title }: { title?: string }) {
       <div className={styles.headerRow}>
         <div className={styles.title}>{title ?? "Contents"}</div>
       </div>
-      <div id="toc-content" className={styles.content}>
+      <div id="toc-content" className={styles.content} ref={listRef}>
         <ul className={styles.list}>
           {items.map((h) => (
             <li

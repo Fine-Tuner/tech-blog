@@ -6,7 +6,8 @@
   width: 16px; /* 기본은 얇은 바만 */
   max-height: calc(100vh - 200px);
   overflow: hidden;
-  padding: 0; /* 기본 패딩 없음 */
+  /* 수직 패딩은 hover 유무와 동일하게 유지해 Y축 정렬 유지 */
+  padding: 10px 0 8px;
   border-radius: 8px;
   background: transparent; /* 기본 배경 없음 */
   color: var(--text-color);
@@ -31,11 +32,19 @@
 }
 
 .headerRow {
-  display: none; /* 기본 숨김 */
+  display: flex; /* 트리에서 제거하지 않음: 높이 유지 */
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
   margin-bottom: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-2px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .title {
@@ -133,10 +142,12 @@
 }
 
 .label {
+  display: block; /* ellipsis 동작 위해 블록화 */
   opacity: 0;
   max-width: 0;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis; /* 말줄임 */
   transition:
     opacity 0.2s ease,
     max-width 0.2s ease;
@@ -172,6 +183,7 @@
 /* hover 시 카드 전개 */
 .toc:hover {
   width: 220px;
+  /* 수직 패딩은 동일, 수평만 확장 */
   padding: 10px 12px 8px;
   background: var(--contrast-bg-color);
   border-color: var(--hover-background-color);
@@ -185,12 +197,13 @@
 .toc:hover .item {
   margin-top: 10px;
 }
-.toc:hover .indent3 {
-  margin-top: 6px;
-}
+/* hover에서도 동일 간격 유지(정렬 보정) */
 
 .toc:hover .headerRow {
   display: flex;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .indent3 {
