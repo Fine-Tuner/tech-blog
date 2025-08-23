@@ -8,6 +8,26 @@ import Blur from "../components/Blur.astro";
 import { Comment } from "../components/Comment";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import TOC from "../components/TOC";
+import PostPager from "../components/posts/PostPager.astro";
+const allPosts = await Astro.glob("../pages/**/posts/*.md");
+
+// 같은 카테고리(…/posts/)만 필터링
+const currentUrl = Astro.url.pathname;
+const postsKey = "/posts/";
+const idx = currentUrl.indexOf(postsKey);
+const categoryPrefix =
+  idx !== -1 ? currentUrl.slice(0, idx + postsKey.length) : "/";
+
+const sameCategoryPosts = allPosts.filter((p: any) =>
+  p.url?.startsWith(categoryPrefix),
+);
+
+// 최신순 정렬
+sameCategoryPosts.sort(
+  (a: any, b: any) =>
+    new Date(b.frontmatter.pubDate).getTime() -
+    new Date(a.frontmatter.pubDate).getTime(),
+);
 
 interface Props {
   frontmatter: {
@@ -32,6 +52,7 @@ const day = frontmatter.pubDate.toString().slice(8, 10);
       <TOC title={frontmatter.title} client:load />
       <slot />
       <Comment client:load />
+      <PostPager posts={sameCategoryPosts} currentUrl={Astro.url.pathname} />
     </PostLayout>
   </MainLayout>
 </BaseLayout>

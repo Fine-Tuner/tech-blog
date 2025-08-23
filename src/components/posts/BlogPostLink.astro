@@ -1,13 +1,38 @@
 ---
-const { url, title, date } = Astro.props;
+const { url, title, date, readingTime } = Astro.props;
 ---
 
 <li>
-  <a href={url}
-    ><div class="title-date-wrapper">
-      <span class="title">{title}</span><span class="date">{date}</span>
-    </div></a
-  >
+  <a href={url}>
+    <div class="title-date-wrapper">
+      <span class="title">{title}</span>
+      <span class="date"
+        >{
+          readingTime && (
+            <div class="reading-time" aria-label="예상 읽기 시간">
+              {/* <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="clock-icon"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg> */}
+              <span>{readingTime}</span>
+            </div>
+          )
+        }{date}</span
+      >
+    </div>
+  </a>
 </li>
 
 <style>
@@ -54,6 +79,12 @@ const { url, title, date } = Astro.props;
     }
   }
 
+  .date {
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+  }
+
   .title-date-wrapper {
     margin-left: 15%;
 
@@ -64,5 +95,16 @@ const { url, title, date } = Astro.props;
 
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
+  }
+
+  .reading-time {
+    /* margin-left: 15%; */
+    color: var(--gray-400);
+    font-size: 0.6rem;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-right: 10px;
   }
 </style>

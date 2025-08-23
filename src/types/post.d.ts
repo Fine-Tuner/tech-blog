@@ -4,4 +4,6 @@ export interface PostData {
     title: string;
     pubDate: number;
   };
+  // Astro markdown instance provides compiledContent() to get HTML string
+  compiledContent: () => string;
 }

@@ -55,4 +55,9 @@ export const collections = {
   "learn-next": learnNext,
   "learn-react": learnReact,
   "learn-swift": learnSwift,
+  // tool posts under src/pages/tool/posts
+  tool: defineCollection({
+    loader: glob({ base: "./src/pages/tool/posts", pattern: "**/*.md" }),
+    schema: commonSchema,
+  }),
 };
