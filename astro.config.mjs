@@ -2,7 +2,7 @@ import react from "@astrojs/react";
 import { defineConfig } from "astro/config";
 import rehypePrettyCode from "rehype-pretty-code";
 
-import sitemap from "@astrojs/sitemap";
+// import sitemap from "@astrojs/sitemap";
 
 const prettyCodeOptions = {
   theme: "night-owl",
@@ -16,12 +16,7 @@ export default defineConfig({
       experimentalReactChildren: true,
       include: ["**/react/*"],
     }),
-    sitemap({
-      filter: (page) => !page.includes("/draft/"),
-      changefreq: "weekly",
-      priority: 0.8,
-      lastmod: new Date("2025-08-23"),
-    }),
+    // 컬렉션 기반 커스텀 sitemap 생성으로 대체
   ],
   markdown: {
     syntaxHighlight: false,

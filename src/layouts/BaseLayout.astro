@@ -3,7 +3,6 @@ import { ViewTransitions } from "astro:transitions";
 import "../style/globalStyle.css";
 import Blur from "../components/Blur.astro";
 import ScrollContainer from "../components/ScrollContainer";
-import { Analytics } from "@vercel/analytics/next";
 
 interface Props {
   pageTitle?: string;
@@ -204,6 +203,5 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       <Blur />
       <slot />
     </ScrollContainer>
-    <Analytics />
   </body>
 </html>
