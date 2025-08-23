@@ -29,7 +29,7 @@ const day = frontmatter.pubDate.toString().slice(8, 10);
   <NavHeader />
   <MainLayout title={frontmatter.title} description={`${year}.${month}.${day}`}>
     <PostLayout>
-      <TOC client:load />
+      <TOC title={frontmatter.title} client:load />
       <slot />
       <Comment client:load />
     </PostLayout>

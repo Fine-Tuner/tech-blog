@@ -3,18 +3,23 @@
   top: 50%;
   right: max(24px, calc((100vw - var(--content-width)) / 2 - 300px));
   left: auto;
-  width: 220px;
+  width: 16px; /* 기본은 얇은 바만 */
   max-height: calc(100vh - 200px);
   overflow: hidden;
-  padding: 12px 12px 8px;
+  padding: 0; /* 기본 패딩 없음 */
   border-radius: 8px;
-  background: var(--contrast-bg-color);
+  background: transparent; /* 기본 배경 없음 */
   color: var(--text-color);
-  border: 1px solid var(--hover-background-color);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid transparent; /* 기본 테두리 없음 */
+  box-shadow: none; /* 기본 그림자 없음 */
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+    opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    padding 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   z-index: 2;
   transform: translateY(-50%);
 }
@@ -26,7 +31,7 @@
 }
 
 .headerRow {
-  display: flex;
+  display: none; /* 기본 숨김 */
   align-items: center;
   justify-content: space-between;
   gap: 8px;
@@ -45,8 +50,12 @@
   background: transparent;
   color: var(--text-color);
   border-radius: 6px;
-  padding: 3px 6px;
+  padding: 4px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
 }
 
 .toggleBtn:hover {
@@ -78,6 +87,11 @@
 }
 
 .link {
+  position: relative;
+  display: grid;
+  grid-template-columns: 8px 1fr;
+  align-items: center;
+  gap: 8px;
   color: var(--text-color);
   text-decoration: none;
 }
@@ -91,13 +105,100 @@
   filter: drop-shadow(0 0 0.25rem rgba(255, 255, 255, 0.35));
 }
 
+.active {
+  color: var(--external-link-color);
+  font-weight: 600;
+}
+
+/* Notion-like bar + reveal label */
+.bar {
+  height: 2px;
+  width: 100%;
+  background: var(--hover-background-color);
+  /* 지원 브라우저에서 약간 더 밝게 */
+  background: color-mix(in srgb, var(--hover-background-color), white 30%);
+  border-radius: 2px;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.3s ease,
+    width 0.3s ease;
+  opacity: 0.85;
+}
+
+.active .bar {
+  background: var(--external-link-color);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+  opacity: 1;
+}
+
+.label {
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    opacity 0.2s ease,
+    max-width 0.2s ease;
+}
+
+/* h3(###) 항목은 길이만 70%로 (높이는 기본 2px 유지) */
+.indent3 .bar {
+  width: 70%;
+}
+/* 접힌 상태에서는 들여쓰기를 줄이고 바 길이는 100%로 보여 가시성 확보 */
+.toc:not(:hover) .indent3 {
+  padding-left: 0;
+}
+.toc:hover .indent3 {
+  padding-left: 16px;
+}
+/* 비-hover: h3 바는 h2보다 짧게 */
+.toc:not(:hover) .indent3 .bar {
+  width: 70%;
+}
+/* hover: h3 바는 70% 유지 */
+.toc:hover .indent3 .bar {
+  width: 70%;
+}
+
+.link:hover .label,
+.link:focus .label,
+.toc:hover .label {
+  opacity: 1;
+  max-width: 420px;
+}
+
+/* hover 시 카드 전개 */
+.toc:hover {
+  width: 220px;
+  padding: 10px 12px 8px;
+  background: var(--contrast-bg-color);
+  border-color: var(--hover-background-color);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* 간격 규칙: 비-hover에서는 모두 동일, hover에서는 h3만 더 촘촘 */
+.toc:not(:hover) .item {
+  margin-top: 10px;
+}
+.toc:hover .item {
+  margin-top: 10px;
+}
+.toc:hover .indent3 {
+  margin-top: 6px;
+}
+
+.toc:hover .headerRow {
+  display: flex;
+}
+
 .indent3 {
   padding-left: 16px;
   line-height: 1.4;
-  margin-top: 4px;
   position: relative;
 }
-.indent3::before {
+/* .indent3::before {
   content: "";
   position: absolute;
   left: 4px;
@@ -106,9 +207,9 @@
   width: 2px;
   height: 2px;
   background: var(--text-color);
-  border-radius: 0; /* square */
+  border-radius: 0;
   opacity: 0.85;
-}
+} */
 .indent3:hover::before {
   background: var(--hover-color);
   filter: drop-shadow(0 0 0.25rem rgba(255, 255, 255, 0.35));

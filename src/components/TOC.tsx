@@ -89,11 +89,53 @@ function useShowAfterScroll(
   return show;
 }
 
-export default function TOC() {
+function useActiveHeading(
+  headings: HeadingItem[],
+  offset = 120,
+): string | null {
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!headings.length) return;
+
+    const computeActive = () => {
+      const candidates = headings
+        .map((h) => {
+          const el = document.getElementById(h.id);
+          if (!el) return { id: h.id, top: Number.POSITIVE_INFINITY };
+          const top = el.getBoundingClientRect().top;
+          return { id: h.id, top };
+        })
+        .filter((x) => x.top - offset <= 0)
+        .sort((a, b) => b.top - a.top);
+
+      if (candidates.length > 0) {
+        setActiveId(candidates[0].id);
+        return;
+      }
+
+      setActiveId(headings[0]?.id ?? null);
+    };
+
+    const onWinScroll = () => computeActive();
+    window.addEventListener("scroll", onWinScroll, { passive: true });
+    const interval = window.setInterval(computeActive, 200);
+    computeActive();
+
+    return () => {
+      window.removeEventListener("scroll", onWinScroll);
+      window.clearInterval(interval);
+    };
+  }, [headings, offset]);
+
+  return activeId;
+}
+
+export default function TOC({ title }: { title?: string }) {
   const article = useArticle();
   const headings = useHeadingsFromArticle(article);
   const show = useShowAfterScroll(article, 200);
-  const [collapsed, setCollapsed] = useState(false);
+  const activeId = useActiveHeading(headings, 120);
 
   const items = useMemo(() => headings, [headings]);
 
@@ -121,19 +163,10 @@ export default function TOC() {
   return (
     <nav
       aria-label="목차"
-      className={`${styles.toc} ${show ? "" : styles.hidden} ${collapsed ? styles.collapsed : ""}`}
+      className={`${styles.toc} ${show ? "" : styles.hidden}`}
     >
       <div className={styles.headerRow}>
-        <div className={styles.title}>Contents</div>
-        <button
-          type="button"
-          className={styles.toggleBtn}
-          onClick={() => setCollapsed((v) => !v)}
-          aria-expanded={!collapsed}
-          aria-controls="toc-content"
-        >
-          {collapsed ? "펼치기" : "접기"}
-        </button>
+        <div className={styles.title}>{title ?? "Contents"}</div>
       </div>
       <div id="toc-content" className={styles.content}>
         <ul className={styles.list}>
@@ -144,13 +177,16 @@ export default function TOC() {
             >
               <a
                 href={`#${h.id}`}
-                className={styles.link}
+                className={`${styles.link} ${activeId === h.id ? styles.active : ""}`}
                 onClick={(e) => {
                   e.preventDefault();
                   scrollWithOffset(h.id);
                 }}
+                aria-current={activeId === h.id ? "true" : undefined}
+                aria-label={h.text}
               >
-                {h.text}
+                <span className={styles.bar} aria-hidden="true" />
+                <span className={styles.label}>{h.text}</span>
               </a>
             </li>
           ))}
