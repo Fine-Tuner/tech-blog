@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MoonSVG from "../assets/Moon";
 import SunSVG from "../assets/Sun";
 import Styles from "./ThemeIconButton.module.css";
+import { changeGiscusTheme } from "./Comment";
 
 export default function ThemeIconButton() {
   const [darkMode, setDarkMode] = useState(false);
@@ -16,9 +17,11 @@ export default function ThemeIconButton() {
       if (isDark) {
         $themeChangeBtn?.classList.add("dark");
         setDarkMode(true);
+        changeGiscusTheme("dark");
       } else {
         $themeChangeBtn?.classList.remove("dark");
         setDarkMode(false);
+        changeGiscusTheme("light");
       }
     });
   }, []);
@@ -37,9 +40,11 @@ export default function ThemeIconButton() {
     if (isDarkMode) {
       $themeChangeBtn?.classList.add("dark");
       setDarkMode(true);
+      changeGiscusTheme("dark");
     } else {
       $themeChangeBtn?.classList.remove("dark");
       setDarkMode(false);
+      changeGiscusTheme("light");
     }
   }, [darkMode]);
 

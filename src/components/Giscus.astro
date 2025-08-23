@@ -2,7 +2,7 @@
 
 ---
 
-<script is:inline>
+<!-- <script is:inline>
   // giscus 다크모드 동기화: 문서의 dark 클래스와 연동하여 iframe 테마를 변경
   const getTheme = () =>
     document.documentElement.classList.contains("dark") ? "dark" : "light";
@@ -54,10 +54,10 @@
   window.addEventListener("storage", (e) => {
     if (e.key === "theme") setTimeout(applyTheme, 0);
   });
-</script>
-
+</script> -->
 <section aria-label="댓글">
   <script
+    is:inline
     src="https://giscus.app/client.js"
     data-repo="Fine-Tuner/tech-blog"
     data-repo-id="R_kgDONfwMaA"
