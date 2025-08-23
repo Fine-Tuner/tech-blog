@@ -31,6 +31,10 @@ export default defineConfig({
         // 불필요한 페이지 제외
         return !page.includes("/draft/");
       },
+      // XML을 읽기 쉽게 포맷팅
+      customPages: undefined,
+      i18n: undefined,
+      entryLimit: 45000,
     }),
   ],
   markdown: {
