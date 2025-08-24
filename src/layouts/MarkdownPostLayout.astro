@@ -29,6 +29,34 @@ sameCategoryPosts.sort(
     new Date(a.frontmatter.pubDate).getTime(),
 );
 
+// 읽기 시간 계산 (약 200 wpm)
+const computeReadingTime = async (post: any): Promise<string> => {
+  try {
+    let content = "";
+    if (typeof post?.compiledContent === "function") {
+      const result = post.compiledContent();
+      content = typeof result === "string" ? result : await result;
+    } else if (typeof post?.rawContent === "function") {
+      const result = post.rawContent();
+      content = typeof result === "string" ? result : await result;
+    }
+    if (typeof content !== "string") content = "";
+    const text = content.replace(/<[^>]*>/g, " ").trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    const minutes = Math.max(1, Math.ceil(words / 200));
+    return `${minutes} m`;
+  } catch (_) {
+    return "1 m";
+  }
+};
+
+const currentPost = sameCategoryPosts.find(
+  (p: any) => p.url === Astro.url.pathname,
+);
+const readingTimeText = currentPost
+  ? await computeReadingTime(currentPost)
+  : undefined;
+
 interface Props {
   frontmatter: {
     title: string;
@@ -47,7 +75,12 @@ const day = frontmatter.pubDate.toString().slice(8, 10);
 
 <BaseLayout pageTitle={frontmatter.title}>
   <NavHeader />
-  <MainLayout title={frontmatter.title} description={`${year}.${month}.${day}`}>
+  <MainLayout
+    title={frontmatter.title}
+    description={`${year}.${month}.${day}`}
+    showReadingTime
+    initialReadingTime={readingTimeText}
+  >
     <PostLayout>
       <TOC title={frontmatter.title} client:load />
       <slot />

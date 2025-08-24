@@ -1,14 +1,49 @@
 ---
 import ThemeIconButton from "../components/ThemeIconButton";
 
-const { title, description } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+  showReadingTime?: boolean;
+  initialReadingTime?: string;
+}
+
+const { title, description, showReadingTime = false, initialReadingTime } =
+  Astro.props as Props;
 ---
 
 <main>
   <div class="header-area">
     <div class="header-title-area">
       <h1>{title}</h1>
-      {description && <p>{description}</p>}
+      {description && (
+        <div class="meta">
+          {showReadingTime && (
+            <span class="reading-time" id="reading-time" aria-label="예상 읽기 시간" data-initial={initialReadingTime ?? ''} hidden>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="clock-icon"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span class="reading-time-text">{initialReadingTime}</span>
+            </span>
+            <span>|</span>
+          )}
+          
+          <span class="date">{description}</span>
+        </div>
+      )}
     </div>
 
     <ThemeIconButton client:only="react" />
@@ -44,4 +79,47 @@ const { title, description } = Astro.props;
     justify-content: space-between;
     align-items: center;
   }
+
+  .meta {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gray-400);
+    font-size: 0.875rem;
+  }
+
+  .reading-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .clock-icon {
+    color: var(--gray-400);
+  }
 </style>
+
+{showReadingTime && (
+  <script is:inline>
+    // 서버에서 전달된 initialReadingTime이 있으면 그대로 사용하고,
+    // 없으면 클라이언트에서 계산합니다.
+    const rt = document.getElementById('reading-time');
+    const textEl = rt?.querySelector('.reading-time-text');
+    if (rt && textEl) {
+      const initial = rt.getAttribute('data-initial');
+      if (initial && initial.trim()) {
+        rt.hidden = false;
+      } else {
+        const article = document.querySelector('article');
+        if (article) {
+          const text = article.innerText || '';
+          const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+          const minutes = Math.max(1, Math.ceil(words / 200));
+          textEl.textContent = `${minutes} m`;
+          rt.hidden = false;
+        }
+      }
+    }
+  </script>
+)}
