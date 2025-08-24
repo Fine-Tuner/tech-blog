@@ -19,7 +19,13 @@ const { title, description, showReadingTime = false, initialReadingTime } =
       {description && (
         <div class="meta">
           {showReadingTime && (
-            <span class="reading-time" id="reading-time" aria-label="예상 읽기 시간" data-initial={initialReadingTime ?? ''} hidden>
+            <span
+              class="reading-time"
+              id="reading-time"
+              aria-label="예상 읽기 시간"
+              data-initial={initialReadingTime ?? ''}
+              hidden={!initialReadingTime}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="14"
@@ -109,6 +115,7 @@ const { title, description, showReadingTime = false, initialReadingTime } =
     if (rt && textEl) {
       const initial = rt.getAttribute('data-initial');
       if (initial && initial.trim()) {
+        textEl.textContent = initial;
         rt.hidden = false;
       } else {
         const article = document.querySelector('article');

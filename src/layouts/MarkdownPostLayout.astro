@@ -50,8 +50,15 @@ const computeReadingTime = async (post: any): Promise<string> => {
   }
 };
 
+const normalize = (inputUrl: string) => {
+  if (!inputUrl) return "";
+  let normalizedUrl = inputUrl.replace(/\/index\.html$/, "/");
+  normalizedUrl = normalizedUrl.replace(/\/+$/, "");
+  return normalizedUrl;
+};
+
 const currentPost = sameCategoryPosts.find(
-  (p: any) => p.url === Astro.url.pathname,
+  (p: any) => normalize(p.url) === normalize(Astro.url.pathname),
 );
 const readingTimeText = currentPost
   ? await computeReadingTime(currentPost)
