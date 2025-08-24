@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+// import { ViewTransitions } from "astro:transitions";
 import "../style/globalStyle.css";
 import Blur from "../components/Blur.astro";
 import ScrollContainer from "../components/ScrollContainer";
@@ -168,7 +168,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <title>{pageTitle}</title>
     <style></style>
-    <ViewTransitions />
+    <!-- <ViewTransitions /> -->
     <link rel="sitemap" href="/sitemap.xml" />
 
     <!-- Remove local font preloads as we're now using CDN -->
