@@ -7,7 +7,17 @@ const { posts, currentUrl } = Astro.props as {
 };
 
 // posts는 최신순으로 정렬되어 있다고 가정
-const index = posts.findIndex((p) => p.url === currentUrl);
+const normalize = (inputUrl: string) => {
+  if (!inputUrl) return "";
+  // '/path', '/path/', '/path/index.html' 모두 동일 경로로 취급
+  let normalizedUrl = inputUrl.replace(/\/index\.html$/, "/");
+  normalizedUrl = normalizedUrl.replace(/\/+$/, "");
+  return normalizedUrl;
+};
+
+const index = posts.findIndex(
+  (p) => normalize(p.url) === normalize(currentUrl),
+);
 const prev = index > 0 ? posts[index - 1] : null; // 이전 글 (더 최신)
 const next = index >= 0 && index < posts.length - 1 ? posts[index + 1] : null; // 다음 글 (더 오래된)
 ---
