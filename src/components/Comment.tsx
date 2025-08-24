@@ -54,6 +54,10 @@ export const Comment = (props: React.HTMLAttributes<HTMLElement>) => {
   }, []);
 
   return (
-    <section {...props} style={{ minHeight: "372px" }} id="giscus"></section>
+    <section
+      {...props}
+      style={{ minHeight: "372px", marginTop: 80 }}
+      id="giscus"
+    ></section>
   );
 };
